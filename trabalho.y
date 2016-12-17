@@ -121,7 +121,7 @@ string includes =
 
 %token TK_ID TK_CINT TK_CDOUBLE TK_VAR TK_PROGRAM TK_BEGIN TK_END TK_ATRIB
 %token TK_WRITELN TK_CSTRING TK_FUNCTION TK_MOD
-%token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND TK_OR
+%token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
 
 %left TK_AND
@@ -249,17 +249,6 @@ VAR : IDS ':' TK_ID
           insere_var_ts( $1.lista_str[i], tipo );
         }
       }
-     | IDS ':' TK_ARRAY '[' TK_CINT TK_PTPT TK_CINT ']''[' TK_CINT TK_PTPT TK_CINT ']' TK_OF TK_ID
-       {
-          Tipo tipo = Tipo(traduz_nome_tipo_pascal( $15.v ), toInt( $5.v ), toInt( $7.v ), toInt( $10.v ), toInt( $12.v ) );
-         
-          $$ = Atributos();
-
-	  for( int i = 0; i < $1.lista_str.size(); i ++ ) {
-            $$.c += declara_variavel( $1.lista_str[i], tipo ) + ";\n";
-            insere_var_ts( $1.lista_str[i], tipo );
-          }
-	}
     ;
     
 IDS : IDS ',' TK_ID 
@@ -343,12 +332,7 @@ ATRIB : TK_ID TK_ATRIB E
         { // Falta testar: tipo, limite do array, e se a variável existe
           $$.c = $3.c + $6.c +
                  "  " + $1.v + "[" + $3.v + "] = " + $6.v + ";\n";
-        }
-      | TK_ID '[' E ']' '[' E ']' TK_ATRIB E
-        { // Falta testar: tipo, limite do array, e se a variável existe
-          $$.c = $3.c + $6.c +
-                 "  " + $1.v + "[" + $3.v + "]" + "[" + $6.v + "] = " + $9.v + ";\n";
-        } 
+        }  
       ;   
 
 E : E '+' E
@@ -375,8 +359,6 @@ E : E '+' E
     { $$ = gera_codigo_operador( $1, "!=", $3 ); }
   | E TK_AND E
     { $$ = gera_codigo_operador( $1, "&&", $3 ); }
-  | E TK_OR E
-    { $$ = gera_codigo_operador( $1, "||", $3 ); }
   | '(' E ')'
     { $$ = $2; }
   | F
@@ -408,24 +390,6 @@ F : TK_CINT
     {
       // Implementar: vai criar uma temporaria int para o índice e 
       // outra do tipoBase do array para o valor recuperado.
-      Tipo tipoArray = consulta_ts($1.v);
-      $$.t = Tipo( tipoArray.tipo_base );
-      if( tipoArray.ndim != 2)
-	erro( "Variável " + $1.v + " não é array de duas dimensões" );
-
-      if( $3.t.ndim != 0 || $3.t.tipo_base != "i" )
-        erro( "Primeiro indice de array deve ser integer de zero dimensão: " +
-              $3.t.tipo_base + "/" + toString( $3.t.ndim ) );
-
-      if( $6.t.ndim != 0 || $6.t.tipo_base != "i" )
-        erro( "Segundo indice de array deve ser integer de zero dimensão: " +
-              $6.t.tipo_base + "/" + toString( $6.t.ndim ) ); 
-
-      $$.v = gera_nome_var_temp( $$.t.tipo_base );
-      $$.c = $3.c +
-             gera_teste_limite_array( $3.v, $6.v, tipoArray ) +   
-             "  " + $$.v + " = " + $1.v + "[" + $3.v + "]" + "[" + $6.v + "];\n";
-      
     } 
   | TK_ID 
     { $$.v = $1.v; $$.t = consulta_ts( $1.v ); $$.c = $1.c; }  
@@ -532,9 +496,6 @@ void inicializa_operadores() {
 
   // Resultados para o operador "And"
   tipo_opr["b&&b"] = "b";
-
-  // Resultados para o operador "Or"
-  tipo_opr["b||b"] = "b";
   
   // Resultados para o operador "="
   tipo_opr["i==i"] = "b";
@@ -737,13 +698,7 @@ string declara_variavel( string nome, Tipo tipo ) {
                 ) + "]";
             break; 
             
-    case 2: indice = "[" + toString( 
-                  (tipo.fim[0]-tipo.inicio[0]+1) *  
-                  (tipo.tipo_base == "s" ? 256 : 1)
-                ) + "]" + "[" + toString( 
-                  (tipo.fim[1]-tipo.inicio[1]+1) *  
-                  (tipo.tipo_base == "s" ? 256 : 1)
-                ) + "]";
+    case 2:
             break;
     
     default:
@@ -773,42 +728,6 @@ string gera_teste_limite_array( string indice_1, Tipo tipoArray ) {
                "  cout << endl;\n" + 
                "  exit( 1 );\n" + 
             "  " + label_end + ":;\n";
-  
-  return codigo;
-}
-
-string gera_teste_limite_array( string indice_1, string indice_2, Tipo tipoArray ) {
-  string var_teste_inicio1 = gera_nome_var_temp( "b" );
-  string var_teste_fim1 = gera_nome_var_temp( "b" );
-  string var_teste_inicio2 = gera_nome_var_temp( "b" );
-  string var_teste_fim2 = gera_nome_var_temp( "b" );
-  string var_teste1 = gera_nome_var_temp( "b" );
-  string var_teste2 = gera_nome_var_temp( "b" );
-  string label_test = gera_label( "limite_array_not_ok" );
-  string label_end = gera_label( "limite_array_ok" );
-
-  string codigo = "  " + var_teste_inicio1 + " = " + indice_1 + " >= " +
-                  toString( tipoArray.inicio[0] ) + ";\n" +
-                  "  " + var_teste_fim1 + " = " + indice_1 + " <= " +
-                  toString( tipoArray.fim[0] ) + ";\n" +
-                  "  " + var_teste1 + " = " + var_teste_inicio1 + " && " + 
-                                             var_teste_fim1 + ";\n";
-
-  codigo += "  " + var_teste_inicio2 + " = " + indice_2 + " >= " + toString( tipoArray.inicio[0] ) + ";\n";
-  codigo += "  " + var_teste_fim2 + " = " + indice_2 + " <= " + toString( tipoArray.fim[0] ) + ";\n";
-  codigo += "  " + var_teste2 + " = " + var_teste_inicio2 + " && " + var_teste_fim2 + ";\n";
-  codigo += "  " + var_teste2 + " = !" + var_teste2 + ";\n";
-  codigo += " if( " + var_teste2 + " ) goto " + label_test + ";\n";                                             
-  codigo += " if( " + var_teste1 + ") goto " + label_end + ";\n";
-  codigo += " " + label_test + ":;\n";
-  codigo += "  printf( \"Limite de array ultrapassado: Indice 1: %d <= %d <= %d, Indice 2: %d <= %d <= %d \", "+
-               toString( tipoArray.inicio[0] ) + " ," + indice_1 + ", " +
-               toString( tipoArray.fim[0] ) + " , " +
-               toString( tipoArray.inicio[1] ) + " ," + indice_2 + ", " +
-               toString( tipoArray.fim[1] ) + " );\n";
-  codigo += "  cout << endl;\n";
-  codigo += "  exit( 1 );\n";
-  codigo += "  " + label_end + ":;\n";
   
   return codigo;
 }

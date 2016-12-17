@@ -3,7 +3,6 @@ all: trabalho entrada.pas
 	##./gabarito < gerado.cc
 	##g++ -o saida gerado.cc
 	##./saida
-	##Concluido
 
 lex.yy.c: trabalho.lex
 	lex trabalho.lex

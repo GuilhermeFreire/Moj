@@ -1,12 +1,13 @@
 Program HelloWorld;
 
-Var a: Array[1 .. 10][1 .. 10] Of Real;
-Var b, c: Boolean;
+Function MDC( a, b : Integer; teste : Real ): Integer;
+Begin
+  If a Mod b = 0 Then
+    Result := b
+  Else
+    Result := MDC( b, a Mod b, 1.0 );
+End; 
 
 Begin
-  b := 2;
-  c := 1;
-  a[5][2] := 1;
-  a[5][3] := b Or c;
-  WriteLn( a[5][3] );
+  WriteLn( MDC( 48, 32, 1.0 ) );
 End.	
