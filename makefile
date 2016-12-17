@@ -1,8 +1,8 @@
-all: trabalho entrada.pas
+all: trabalho entrada.moj
 	./trabalho < entrada.moj > gerado.cc
-	##./gabarito < gerado.cc
-	##g++ -o saida gerado.cc
-	##./saida
+	./gabarito < gerado.cc
+	g++ -o saida gerado.cc
+	./saida
 
 lex.yy.c: trabalho.lex
 	lex trabalho.lex
