@@ -26,9 +26,9 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "Begin"    { yylval = Atributos( yytext ); return TK_BEGIN; }
 "End"      { yylval = Atributos( yytext ); return TK_END; }
 "WriteLn"  { yylval = Atributos( yytext ); return TK_WRITELN; }
-"If"       { yylval = Atributos( yytext ); return TK_IF; }
+"🤔"       { yylval = Atributos( yytext ); return TK_IF; }
 "Then"     { yylval = Atributos( yytext ); return TK_THEN; }
-"Else"     { yylval = Atributos( yytext ); return TK_ELSE; }
+"💩"     { yylval = Atributos( yytext ); return TK_ELSE; }
 "For"      { yylval = Atributos( yytext ); return TK_FOR; }
 "To"       { yylval = Atributos( yytext ); return TK_TO; }
 "Do"       { yylval = Atributos( yytext ); return TK_DO; }
@@ -37,6 +37,8 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "Function" { yylval = Atributos( yytext ); return TK_FUNCTION; }
 "Mod"      { yylval = Atributos( yytext ); return TK_MOD; }
 
+"🌜"    { yylval = Atributos( yytext ); return TK_ABRE_PAREN; }
+"🌛"    { yylval = Atributos( yytext ); return TK_FECHA_PAREN; }
 
 ".."       { yylval = Atributos( yytext ); return TK_PTPT; }
 ":="       { yylval = Atributos( yytext ); return TK_ATRIB; }

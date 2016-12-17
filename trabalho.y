@@ -123,6 +123,7 @@ string includes =
 %token TK_WRITELN TK_CSTRING TK_FUNCTION TK_MOD
 %token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
+%token TK_ABRE_PAREN TK_FECHA_PAREN
 
 %left TK_AND
 %nonassoc '<' '>' TK_MAIG TK_MEIG '=' TK_DIF 
@@ -168,7 +169,7 @@ CABECALHO : TK_FUNCTION TK_ID OPC_PARAM ':' TK_ID
             }
           ;
           
-OPC_PARAM : '(' PARAMS ')'
+OPC_PARAM : TK_ABRE_PAREN PARAMS TK_FECHA_PAREN
             { $$ = $2; }
           |
             { $$ = Atributos(); }
@@ -310,7 +311,7 @@ CMD_IF : TK_IF E TK_THEN CMD
        ;
  
 
-WRITELN : TK_WRITELN '(' E ')' 
+WRITELN : TK_WRITELN TK_ABRE_PAREN E TK_FECHA_PAREN
           { $$.c = $3.c + 
                    "  cout << " + $3.v + ";\n"
                    "  cout << endl;\n";
@@ -359,7 +360,7 @@ E : E '+' E
     { $$ = gera_codigo_operador( $1, "!=", $3 ); }
   | E TK_AND E
     { $$ = gera_codigo_operador( $1, "&&", $3 ); }
-  | '(' E ')'
+  | TK_ABRE_PAREN E TK_FECHA_PAREN
     { $$ = $2; }
   | F
   ;
@@ -393,7 +394,7 @@ F : TK_CINT
     } 
   | TK_ID 
     { $$.v = $1.v; $$.t = consulta_ts( $1.v ); $$.c = $1.c; }  
-  | TK_ID '(' EXPRS ')' 
+  | TK_ID TK_ABRE_PAREN EXPRS TK_FECHA_PAREN 
     { $$.t = Tipo( "i" ); // consulta_ts( $1.v );
     // Falta verficar o tipo da função e os parametros.
       $$.v = gera_nome_var_temp( $$.t.tipo_base ); 

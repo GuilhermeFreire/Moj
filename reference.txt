@@ -1,0 +1,20 @@
+💬 -> cout
+📹-> cin
+🔂-> for
+🔄-> while
+🤔-> if
+💩-> else
+🔢-> int
+🔠-> string
+®-> double (Real)
+☯-> boolean
+©-> char
+👍-> true
+👎-> false
+🔙-> return
+👉índice👈-> array
+👉índice⚡️índice👈-> array bi
+🌜🌛-> parênteses
+🔓-> abre chaves
+🔒-> fecha chaves (blocos de código)
+✍-> comentário

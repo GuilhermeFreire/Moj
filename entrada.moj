@@ -1,0 +1,13 @@
+Program HelloWorld;
+
+Function MDC🌜 a, b : Integer; teste : Real 🌛: Integer;
+Begin
+  🤔 a Mod b = 0 Then
+    Result := b
+  💩
+    Result := MDC🌜 b, a Mod b, 1.0 🌛;
+End; 
+
+Begin
+  WriteLn🌜 MDC🌜 48, 32, 1.0 🌛 🌛;
+End.	
