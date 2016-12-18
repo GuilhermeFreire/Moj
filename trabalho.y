@@ -168,8 +168,7 @@ DECL : TK_VAR VARS
      ;
      
 FUNCTION : { empilha_ts(); }  CABECALHO ';' CORPO { desempilha_ts(); } ';'
-           { $$.c = $2.c + " {\n" + $4.c + 
-                    " return Result;\n}\n"; } 
+           { $$.c = $2.c + " {\n" + $4.c + " return Result;\n}\n"; } 
          ;
 
 CABECALHO : TK_FUNCTION TK_ID OPC_PARAM ':' TIPO_ID
@@ -303,9 +302,27 @@ BLOCO : TK_BEGIN { var_temp.push_back( "" );} CMDS TK_END
           var_temp.pop_back();
           $$.c = vars + $3.c; }
       ;  
+
+SCOPE : { empilha_ts(); } TK_VAR VARS BLOCO { desempilha_ts(); }
+        { $$.c = $3.c + $4.c; }
+        ;
+
+/*
+SCOPE : { empilha_ts(); }  TK_SCOPE ';' CORPO_SCOPE { desempilha_ts(); }
+        { $$.c = $4.c; }
+        ;
+
+CORPO_SCOPE : TK_VAR VARS BLOCO
+            { $$.c = $2.c + $3.c; }
+            | BLOCO
+            { $$.c = $1.c; }
+            ;    
+*/
       
 CMDS : CMD ';' CMDS
        { $$.c = $1.c + $3.c; }
+     | SCOPE CMDS
+       { $$.c = $1.c + $2.c; }
      | { $$.c = ""; }
      ;  
      
