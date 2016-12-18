@@ -126,6 +126,7 @@ string includes =
 %token TK_ABRE_PAREN TK_FECHA_PAREN
 %token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING
 %token TK_ADD TK_SUB TK_MULT TK_DIV
+%token TK_RETURN
 
 %left TK_AND
 %nonassoc '<' '>' TK_MAIG TK_MEIG '=' TK_DIF 

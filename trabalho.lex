@@ -36,6 +36,8 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "Of"       { yylval = Atributos( yytext ); return TK_OF; }
 "Function" { yylval = Atributos( yytext ); return TK_FUNCTION; }
 "〰"      { yylval = Atributos( yytext ); return TK_MOD; }
+"🔙"      { yylval = Atributos( yytext ); return TK_RETURN; }
+
 
 "🌜"    { yylval = Atributos( yytext ); return TK_ABRE_PAREN; }
 "🌛"    { yylval = Atributos( yytext ); return TK_FECHA_PAREN; }
