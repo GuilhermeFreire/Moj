@@ -25,14 +25,21 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "Program"  { yylval = Atributos( yytext ); return TK_PROGRAM; }
 "🔓"    { yylval = Atributos( yytext ); return TK_BEGIN; }
 "🔒"      { yylval = Atributos( yytext ); return TK_END; }
+
 "💬"  { yylval = Atributos( yytext ); return TK_WRITELN; }
 "📹"  { yylval = Atributos( yytext ); return TK_SCANLN; }
+
 "🤔"       { yylval = Atributos( yytext ); return TK_IF; }
 "⤵️"     { yylval = Atributos( yytext ); return TK_THEN; }
 "💩"     { yylval = Atributos( yytext ); return TK_ELSE; }
 "🔂"      { yylval = Atributos( yytext ); return TK_FOR; }
 "🔄"      { yylval = Atributos( yytext ); return TK_WHILE; }
+"⤴️"     { yylval = Atributos( yytext ); return TK_UP; }
 "➡️"       { yylval = Atributos( yytext ); return TK_TO; }
+"🚦"       { yylval = Atributos( yytext ); return TK_SWITCH; }
+"🚥"       { yylval = Atributos( yytext ); return TK_CASE; }
+
+
 "Do"       { yylval = Atributos( yytext ); return TK_DO; }
 "Array"    { yylval = Atributos( yytext ); return TK_ARRAY; }
 "Of"       { yylval = Atributos( yytext ); return TK_OF; }

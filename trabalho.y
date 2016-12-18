@@ -66,7 +66,7 @@ struct Tipo {
 };
 
 struct Atributos {
-  string v, c; // Valor, tipo e código gerado.
+  string v, c, d; // Valor, tipo, declarações e código gerado.
   Tipo t;
   vector<string> lista_str; // Uma lista auxiliar de strings.
   vector<Tipo> lista_tipo; // Uma lista auxiliar de tipos.
@@ -130,7 +130,7 @@ string includes =
 %token TK_WRITELN TK_SCANLN TK_CSTRING TK_FUNCTION TK_MOD
 %token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND TK_OR
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
-%token TK_WHILE
+%token TK_WHILE TK_UP TK_SWITCH TK_CASE
 %token TK_ABRE_PAREN TK_FECHA_PAREN
 %token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING
 %token TK_ADD TK_SUB TK_MULT TK_DIV
@@ -300,39 +300,34 @@ MAIN : BLOCO
 BLOCO : TK_BEGIN { var_temp.push_back( "" );} CMDS TK_END
         { string vars = var_temp[var_temp.size()-1];
           var_temp.pop_back();
-          $$.c = vars + $3.c; }
+          $$.c = vars + $3.d + $3.c; }
       ;  
 
 SCOPE : { empilha_ts(); } TK_VAR VARS BLOCO { desempilha_ts(); }
-        { $$.c = $3.c + $4.c; }
+        { $$.c = $4.c; $$.d = $3.c; }
         ;
 
-/*
-SCOPE : { empilha_ts(); }  TK_SCOPE ';' CORPO_SCOPE { desempilha_ts(); }
-        { $$.c = $4.c; }
-        ;
-
-CORPO_SCOPE : TK_VAR VARS BLOCO
-            { $$.c = $2.c + $3.c; }
-            | BLOCO
-            { $$.c = $1.c; }
-            ;    
-*/
+COND_SCOPE : SCOPE
+           | BLOCO
+           | CMD ';'
+           ;
       
 CMDS : CMD ';' CMDS
-       { $$.c = $1.c + $3.c; }
+       { $$.c = $1.c + $3.c; $$.d = $1.d + $3.d; }
      | SCOPE CMDS
-       { $$.c = $1.c + $2.c; }
+       { $$.c = $1.c + $2.c; $$.d = $1.d + $2.d; }
+     | CMD_IF CMDS
+       { $$.c = $1.c + $2.c; $$.d = $1.d + $2.d; }
      | { $$.c = ""; }
-     ;  
+     ;   
      
 CMD : WRITELN
     | SCANLN
-    | ATRIB 
-    | CMD_IF
+    | ATRIB
     | BLOCO
     | CMD_FOR
     | CMD_WHILE
+    | CMD_DO_WHILE
     | TK_RETURN E
       {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
     ;   
@@ -373,13 +368,28 @@ CMD_WHILE : TK_WHILE E TK_THEN CMD
 		   label_fim + ":;\n";
 	  }
 	  ;
+
+CMD_DO_WHILE : TK_THEN CMD TK_WHILE E TK_UP
+	  {
+	    string label_teste = gera_label("teste_while");
+	    string label_fim = gera_label("fim_while");
+	    string condicao = gera_nome_var_temp("b");
+	    $$.c = label_teste + ":;\n" + 
+		   $2.c +
+		   $4.c +
+		   "  " + condicao + " = " + $4.v + " == 0;\n" +
+		   "  " + "if( " + condicao + " ) goto " + label_fim + ";\n" + 
+		   "  goto " + label_teste + ";\n" + 
+		   label_fim + ":;\n";
+	  }
+	  ;
     
-CMD_IF : TK_IF E TK_THEN CMD
-         { $$ = gera_codigo_if( $2, $4.c, "" ); }  
-       | TK_IF E TK_THEN CMD TK_ELSE CMD 
-         { $$ = gera_codigo_if( $2, $4.c, $6.c ); }  
+CMD_IF : TK_IF E TK_THEN COND_SCOPE
+         { $$ = gera_codigo_if( $2, $4.c, "" ); $$.d = $4.d; }  
+       | TK_IF E TK_THEN COND_SCOPE TK_ELSE COND_SCOPE
+         { $$ = gera_codigo_if( $2, $4.c, $6.c ); $$.d = $4.d + $6.d; }  
        ;
- 
+
 
 WRITELN : TK_WRITELN TK_ABRE_PAREN E TK_FECHA_PAREN
           { Atributos cod_print = format_writeln($3);
