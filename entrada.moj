@@ -1,13 +1,13 @@
 Program HelloWorld;
 
 Function MDC🌜 a, b : 🔢; teste : ® 🌛: 🔢;
-Begin
-  🤔 a Mod b = 0 Then
+🔓
+  🤔 a 〰 b = 0 Then
     Result := b
   💩
-    Result := MDC🌜 b, a Mod b, 1.0 🌛;
-End; 
+    Result := MDC🌜 b, a 〰 b, 1.0 🌛;
+🔒; 
 
-Begin
+🔓
   WriteLn🌜 MDC🌜 48, 32, 1.0 🌛 🌛;
-End.	
+🔒.	

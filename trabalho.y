@@ -125,11 +125,12 @@ string includes =
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
 %token TK_ABRE_PAREN TK_FECHA_PAREN
 %token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING
+%token TK_ADD TK_SUB TK_MULT TK_DIV
 
 %left TK_AND
 %nonassoc '<' '>' TK_MAIG TK_MEIG '=' TK_DIF 
-%left '+' '-'
-%left '*' '/' TK_MOD
+%left TK_ADD TK_SUB
+%left TK_MULT TK_DIV TK_MOD
 
 %%
 
@@ -337,15 +338,15 @@ ATRIB : TK_ID TK_ATRIB E
         }  
       ;   
 
-E : E '+' E
+E : E TK_ADD E
     { $$ = gera_codigo_operador( $1, "+", $3 ); }
-  | E '-' E 
+  | E TK_SUB E 
     { $$ = gera_codigo_operador( $1, "-", $3 ); }
-  | E '*' E
+  | E TK_MULT E
     { $$ = gera_codigo_operador( $1, "*", $3 ); }
   | E TK_MOD E
     { $$ = gera_codigo_operador( $1, "%", $3 ); }
-  | E '/' E
+  | E TK_DIV E
     { $$ = gera_codigo_operador( $1, "/", $3 ); }
   | E '<' E
     { $$ = gera_codigo_operador( $1, "<", $3 ); }

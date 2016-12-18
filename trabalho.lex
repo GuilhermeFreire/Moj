@@ -23,8 +23,8 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 
 "Var"      { yylval = Atributos( yytext ); return TK_VAR; }
 "Program"  { yylval = Atributos( yytext ); return TK_PROGRAM; }
-"Begin"    { yylval = Atributos( yytext ); return TK_BEGIN; }
-"End"      { yylval = Atributos( yytext ); return TK_END; }
+"🔓"    { yylval = Atributos( yytext ); return TK_BEGIN; }
+"🔒"      { yylval = Atributos( yytext ); return TK_END; }
 "WriteLn"  { yylval = Atributos( yytext ); return TK_WRITELN; }
 "🤔"       { yylval = Atributos( yytext ); return TK_IF; }
 "Then"     { yylval = Atributos( yytext ); return TK_THEN; }
@@ -35,7 +35,7 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "Array"    { yylval = Atributos( yytext ); return TK_ARRAY; }
 "Of"       { yylval = Atributos( yytext ); return TK_OF; }
 "Function" { yylval = Atributos( yytext ); return TK_FUNCTION; }
-"Mod"      { yylval = Atributos( yytext ); return TK_MOD; }
+"〰"      { yylval = Atributos( yytext ); return TK_MOD; }
 
 "🌜"    { yylval = Atributos( yytext ); return TK_ABRE_PAREN; }
 "🌛"    { yylval = Atributos( yytext ); return TK_FECHA_PAREN; }
@@ -45,6 +45,11 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "®"       { yylval = Atributos( yytext ); return TK_EREAL; }
 "©"       { yylval = Atributos( yytext ); return TK_ECHAR; }
 "🔠"       { yylval = Atributos( yytext ); return TK_ESTRING; }
+
+"➕"       { yylval = Atributos( yytext ); return TK_ADD; }
+"➖"       { yylval = Atributos( yytext ); return TK_SUB; }
+"✖️"       { yylval = Atributos( yytext ); return TK_MULT; }
+"➗"       { yylval = Atributos( yytext ); return TK_DIV; }
 
 ".."       { yylval = Atributos( yytext ); return TK_PTPT; }
 ":="       { yylval = Atributos( yytext ); return TK_ATRIB; }
