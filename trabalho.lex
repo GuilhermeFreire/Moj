@@ -31,6 +31,7 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "⤵️"     { yylval = Atributos( yytext ); return TK_THEN; }
 "💩"     { yylval = Atributos( yytext ); return TK_ELSE; }
 "🔂"      { yylval = Atributos( yytext ); return TK_FOR; }
+"🔄"      { yylval = Atributos( yytext ); return TK_WHILE; }
 "➡️"       { yylval = Atributos( yytext ); return TK_TO; }
 "Do"       { yylval = Atributos( yytext ); return TK_DO; }
 "Array"    { yylval = Atributos( yytext ); return TK_ARRAY; }

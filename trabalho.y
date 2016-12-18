@@ -130,6 +130,7 @@ string includes =
 %token TK_WRITELN TK_SCANLN TK_CSTRING TK_FUNCTION TK_MOD
 %token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND TK_OR
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
+%token TK_WHILE
 %token TK_ABRE_PAREN TK_FECHA_PAREN
 %token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING
 %token TK_ADD TK_SUB TK_MULT TK_DIV
@@ -314,6 +315,7 @@ CMD : WRITELN
     | CMD_IF
     | BLOCO
     | CMD_FOR
+    | CMD_WHILE
     | TK_RETURN E
       {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
     ;   
@@ -339,6 +341,21 @@ CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN CMD
                     label_fim + ":;\n";  
           }
         ;
+
+CMD_WHILE : TK_WHILE E TK_THEN CMD
+	  {
+	    string label_teste = gera_label("teste_while");
+	    string label_fim = gera_label("fim_while");
+	    string condicao = gera_nome_var_temp("b");
+	    $$.c = label_teste + ":;\n" + 
+		   $2.c +
+		   "  " + condicao + " = " + $2.v + " == 0;\n" +
+		   "  " + "if( " + condicao + " ) goto " + label_fim + ";\n" + 
+		   $4.c +
+		   "  goto " + label_teste + ";\n" + 
+		   label_fim + ":;\n";
+	  }
+	  ;
     
 CMD_IF : TK_IF E TK_THEN CMD
          { $$ = gera_codigo_if( $2, $4.c, "" ); }  
