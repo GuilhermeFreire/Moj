@@ -26,7 +26,7 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "🔓"    { yylval = Atributos( yytext ); return TK_BEGIN; }
 "🔒"      { yylval = Atributos( yytext ); return TK_END; }
 "💬"  { yylval = Atributos( yytext ); return TK_WRITELN; }
-"💬"  { yylval = Atributos( yytext ); return TK_SCAN; }
+"📹"  { yylval = Atributos( yytext ); return TK_SCANLN; }
 "🤔"       { yylval = Atributos( yytext ); return TK_IF; }
 "⤵️"     { yylval = Atributos( yytext ); return TK_THEN; }
 "💩"     { yylval = Atributos( yytext ); return TK_ELSE; }

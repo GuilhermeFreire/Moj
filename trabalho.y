@@ -127,7 +127,7 @@ string includes =
 %}
 
 %token TK_ID TK_CINT TK_CDOUBLE TK_VAR TK_PROGRAM TK_BEGIN TK_END TK_ATRIB
-%token TK_WRITELN TK_SCAN TK_CSTRING TK_FUNCTION TK_MOD
+%token TK_WRITELN TK_SCANLN TK_CSTRING TK_FUNCTION TK_MOD
 %token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND TK_OR
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
 %token TK_ABRE_PAREN TK_FECHA_PAREN
@@ -309,6 +309,7 @@ CMDS : CMD ';' CMDS
      ;  
      
 CMD : WRITELN
+    | SCANLN
     | ATRIB 
     | CMD_IF
     | BLOCO
@@ -351,9 +352,16 @@ WRITELN : TK_WRITELN TK_ABRE_PAREN E TK_FECHA_PAREN
 	    $$.c = $3.c + cod_print.c;
           }
         ;
+
+SCANLN : TK_SCANLN TK_ABRE_PAREN TK_ID TK_FECHA_PAREN
+	 { 
+	   $3.t = consulta_ts($3.v);
+	   $$.c = "  cin >> " + $3.v + ";\n";
+	 }
+       ;
   
 ATRIB : TK_ID TK_ATRIB E 
-        { // Falta verificar se pode atribuir (perde ponto se não fizer).
+        { 
           $1.t = consulta_ts( $1.v ) ;
           gera_consulta_tipos( $1.t.tipo_base, $3.t.tipo_base );
           if( $1.t.tipo_base == "s" ) 

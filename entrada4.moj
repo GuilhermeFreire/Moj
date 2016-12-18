@@ -1,0 +1,13 @@
+Program IOTest;
+
+Var
+   res: 🔢;
+
+🔓
+  💬🌜 'Tell me the result of 32 + 7:' 🌛;
+  📹🌜res🌛;
+  🤔res = 39⤵️
+    💬🌜'Parabéns, você sabe somar!'🌛
+  💩
+    💬🌜'Errou a conta...'🌛;
+🔒
