@@ -1,4 +1,4 @@
-all: trabalho entrada.moj
+all: remove trabalho entrada.moj
 	./trabalho < entrada.moj > gerado.cc
 	./gabarito < gerado.cc
 	g++ -o saida gerado.cc
@@ -12,3 +12,6 @@ y.tab.c: trabalho.y
 
 trabalho: lex.yy.c y.tab.c
 	g++ -std=c++11 -o trabalho y.tab.c -lfl
+
+remove: remove.sh
+	./remove.sh
