@@ -41,6 +41,10 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "🌛"    { yylval = Atributos( yytext ); return TK_FECHA_PAREN; }
 
 "🔢"       { yylval = Atributos( yytext ); return TK_EINTEGER; }
+"☯"       { yylval = Atributos( yytext ); return TK_EBOOL; }
+"®"       { yylval = Atributos( yytext ); return TK_EREAL; }
+"©"       { yylval = Atributos( yytext ); return TK_ECHAR; }
+"🔠"       { yylval = Atributos( yytext ); return TK_ESTRING; }
 
 ".."       { yylval = Atributos( yytext ); return TK_PTPT; }
 ":="       { yylval = Atributos( yytext ); return TK_ATRIB; }

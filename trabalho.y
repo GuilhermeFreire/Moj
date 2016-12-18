@@ -124,7 +124,7 @@ string includes =
 %token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
 %token TK_ABRE_PAREN TK_FECHA_PAREN
-%token TK_EINTEGER
+%token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING
 
 %left TK_AND
 %nonassoc '<' '>' TK_MAIG TK_MEIG '=' TK_DIF 
@@ -162,7 +162,7 @@ FUNCTION : { empilha_ts(); }  CABECALHO ';' CORPO { desempilha_ts(); } ';'
                     " return Result;\n}\n"; } 
          ;
 
-CABECALHO : TK_FUNCTION TK_ID OPC_PARAM ':' PARSE_ID
+CABECALHO : TK_FUNCTION TK_ID OPC_PARAM ':' TIPO_ID
             { 
               Tipo tipo( traduz_nome_tipo_pascal( $5.v ) );
               
@@ -191,7 +191,7 @@ PARAMS : PARAM ';' PARAMS
        | PARAM                  
        ;  
          
-PARAM : IDS ':' PARSE_ID 
+PARAM : IDS ':' TIPO_ID 
       {
         Tipo tipo = Tipo( traduz_nome_tipo_pascal( $3.v ) ); 
         
@@ -201,7 +201,7 @@ PARAM : IDS ':' PARSE_ID
         for( int i = 0; i < $1.lista_str.size(); i ++ ) 
           $$.lista_tipo.push_back( tipo );
       }
-    | IDS ':' TK_ARRAY '[' TK_CINT TK_PTPT TK_CINT ']' TK_OF PARSE_ID 
+    | IDS ':' TK_ARRAY '[' TK_CINT TK_PTPT TK_CINT ']' TK_OF TIPO_ID 
       {
         Tipo tipo = Tipo( traduz_nome_tipo_pascal( $10.v ), 
                           toInt( $5.v ), toInt( $7.v ) );
@@ -228,7 +228,7 @@ VARS : VAR ';' VARS
        { $$ = Atributos(); }
      ;     
      
-VAR : IDS ':' PARSE_ID 
+VAR : IDS ':' TIPO_ID 
       {
         Tipo tipo = Tipo( traduz_nome_tipo_pascal( $3.v ) ); 
         
@@ -239,7 +239,7 @@ VAR : IDS ':' PARSE_ID
           insere_var_ts( $1.lista_str[i], tipo );
         }
       }
-    | IDS ':' TK_ARRAY '[' TK_CINT TK_PTPT TK_CINT ']' TK_OF PARSE_ID 
+    | IDS ':' TK_ARRAY '[' TK_CINT TK_PTPT TK_CINT ']' TK_OF TIPO_ID 
       {
         Tipo tipo = Tipo( traduz_nome_tipo_pascal( $10.v ), 
                           toInt( $5.v ), toInt( $7.v ) );
@@ -424,8 +424,16 @@ NOME_VAR : TK_ID
            { $$.v = $1.v; $$.t = consulta_ts( $1.v ); $$.c = $1.c; }
          ; 
 
-PARSE_ID : TK_EINTEGER
+TIPO_ID : TK_EINTEGER
 	   {$$.v = "Integer";}
+	 | TK_EBOOL
+	   {$$.v = "Boolean";}
+	 | TK_EREAL
+	   {$$.v = "Real";}
+	 | TK_ECHAR
+	   {$$.v = "Char";}
+	 | TK_ESTRING
+	   {$$.v = "String";}
 	 | TK_ID
 	   {$$.v = $1.v;}
 	 ;

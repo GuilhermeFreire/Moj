@@ -1,6 +1,6 @@
 Program HelloWorld;
 
-Function MDC🌜 a, b : 🔢; teste : Real 🌛: 🔢;
+Function MDC🌜 a, b : 🔢; teste : ® 🌛: 🔢;
 Begin
   🤔 a Mod b = 0 Then
     Result := b
