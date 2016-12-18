@@ -1,17 +1,23 @@
 Program HelloWorld;
 
-⚙ MDC🌜 a, b : 🔢; teste : ® 🌛: 🔢;
-🔓
+⚙ MDC🌜 a, b : 🔢; teste : ® 🌛: 🔢;🔓
   🤔 a 〰 b = 0 ⤵️
-    Result := b
+    🔙 b
   💩
-    Result := MDC🌜 b, a 〰 b, 1.0 🌛;
-🔒; 
+    🔙 MDC🌜 b, a 〰 b, 1.0 🌛;
+🔒;
+
+⚙ MDC2🌜 a, b : 🔢; teste : ® 🌛: 🔢;🔓
+  🔙 1234;
+🔒;
+
 
 🔓
   💬🌜 MDC🌜 48, 32, 1.0 🌛 🌛;
   💬🌜 4 ➕ 2 🌛;
   💬🌜 4 ➖ 2 🌛;
   💬🌜 4 ➗ 3.0 🌛;
+  💬🌜 🌜 2 < 3 🌛 Or 🌜 3 < 2 🌛 🌛;
   💬🌜 4 ✖️ 2 🌛;
+  💬🌜 MDC2🌜48, 32, 1.0🌛🌛;
 🔒

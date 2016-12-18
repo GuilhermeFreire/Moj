@@ -283,8 +283,6 @@ CMD : WRITELN
     | CMD_IF
     | BLOCO
     | CMD_FOR
-    | TK_RETURN E
-      {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
     ;   
     
 CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_DO CMD 
@@ -516,10 +514,8 @@ void inicializa_operadores() {
 //  tipo_opr["s<c"] = "b";
 //  tipo_opr["s<s"] = "b";
 
-
   // Resultados para o operador "And"
   tipo_opr["b&&b"] = "b";
-  // Resultados para o operador "Or"
   tipo_opr["b||b"] = "b";
   
   // Resultados para o operador "="
@@ -559,7 +555,8 @@ void insere_var_ts( string nome_var, Tipo tipo ) {
   ts[ts.size()-1][ nome_var ] = tipo;
 }
 
-void insere_funcao_ts( string nome_func, Tipo retorno, vector<Tipo> params ) {
+void insere_funcao_ts( string nome_func, 
+                       Tipo retorno, vector<Tipo> params ) {
   if( ts[ts.size()-2].find( nome_func ) != ts[ts.size()-2].end() )
     erro( "Função já declarada: " + nome_func );
     
@@ -681,7 +678,8 @@ map<string, string> inicializaMapEmC() {
   return aux;
 }
 
-string declara_funcao( string nome, Tipo tipo, vector<string> nomes, vector<Tipo> tipos ) {
+string declara_funcao( string nome, Tipo tipo, 
+                       vector<string> nomes, vector<Tipo> tipos ) {
   static map<string, string> em_C = inicializaMapEmC();
   
   if( em_C[ tipo.tipo_base ] == "" ) 
@@ -695,7 +693,8 @@ string declara_funcao( string nome, Tipo tipo, vector<string> nomes, vector<Tipo
   string aux = "";
   
   for( int i = 0; i < nomes.size(); i++ ) {
-    aux += declara_variavel( nomes[i], tipos[i] ) + (i == nomes.size()-1 ? " " : ", ");  
+    aux += declara_variavel( nomes[i], tipos[i] ) + 
+           (i == nomes.size()-1 ? " " : ", ");  
     insere_var_ts( nomes[i], tipos[i] );  
   }
       

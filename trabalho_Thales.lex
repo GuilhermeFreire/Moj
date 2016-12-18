@@ -61,7 +61,6 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "And"       { yylval = Atributos( yytext ); return TK_AND; }
 "Or"       { yylval = Atributos( yytext ); return TK_OR; }
 
-
 {CSTRING}  { yylval = Atributos( troca_aspas( yytext ), Tipo( "string" ) ); 
              return TK_CSTRING; }
 {ID}       { yylval = Atributos( yytext ); return TK_ID; }
