@@ -60,6 +60,7 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "<>"       { yylval = Atributos( yytext ); return TK_DIF; }
 "And"       { yylval = Atributos( yytext ); return TK_AND; }
 "Or"       { yylval = Atributos( yytext ); return TK_OR; }
+"❗️"       { yylval = Atributos( yytext ); return TK_NOT; }
 
 
 {CSTRING}  { yylval = Atributos( troca_aspas( yytext ), Tipo( "string" ) ); 

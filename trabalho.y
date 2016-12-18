@@ -106,6 +106,8 @@ Atributos gera_codigo_if( Atributos expr, string cmd_then, string cmd_else );
 
 string traduz_nome_tipo_pascal( string tipo_pascal );
 
+Atributos format_writeln(Atributos s1);
+
 string includes = 
 "#include <iostream>\n"
 "#include <stdio.h>\n"
@@ -128,7 +130,7 @@ string includes =
 %token TK_ADD TK_SUB TK_MULT TK_DIV
 %token TK_RETURN
 
-%left TK_AND TK_OR
+%left TK_AND TK_OR TK_NOT
 %nonassoc '<' '>' TK_MAIG TK_MEIG '=' TK_DIF 
 %left TK_ADD TK_SUB
 %left TK_MULT TK_DIV TK_MOD
@@ -317,9 +319,8 @@ CMD_IF : TK_IF E TK_THEN CMD
  
 
 WRITELN : TK_WRITELN TK_ABRE_PAREN E TK_FECHA_PAREN
-          { $$.c = $3.c + 
-                   "  cout << " + $3.v + ";\n"
-                   "  cout << endl;\n";
+          { Atributos cod_print = format_writeln($3);
+	    $$.c = $3.c + cod_print.c;
           }
         ;
   
@@ -367,6 +368,11 @@ E : E TK_ADD E
     { $$ = gera_codigo_operador( $1, "&&", $3 ); }
   | E TK_OR E
     { $$ = gera_codigo_operador( $1, "||", $3 ); }
+  | TK_NOT E
+    { Atributos blank = Atributos();
+      blank.v = "";
+      blank.t = Tipo("b");
+      $$ = gera_codigo_operador( blank, "!", $2 ); }
   | TK_ABRE_PAREN E TK_FECHA_PAREN
     { $$ = $2; }
   | F
@@ -402,7 +408,7 @@ F : TK_CINT
   | TK_ID 
     { $$.v = $1.v; $$.t = consulta_ts( $1.v ); $$.c = $1.c; }  
   | TK_ID TK_ABRE_PAREN EXPRS TK_FECHA_PAREN 
-    { $$.t = Tipo( "i" ); // consulta_ts( $1.v );
+    { $$.t = Tipo( "i" ); //consulta_ts( $1.v );
     // Falta verficar o tipo da função e os parametros.
       $$.v = gera_nome_var_temp( $$.t.tipo_base ); 
       $$.c = $3.c + "  " + $$.v + " = " + $1.v + "( ";
@@ -527,6 +533,8 @@ void inicializa_operadores() {
   tipo_opr["i==d"] = "b";
   tipo_opr["d==i"] = "b";
   tipo_opr["d==d"] = "b";
+
+  tipo_opr["!b"] = "b";
 }
 
 // Uma tabela de símbolos para cada escopo
@@ -600,7 +608,11 @@ string gera_label( string tipo ) {
 
 Tipo tipo_resultado( Tipo t1, string opr, Tipo t3 ) {
   if( t1.ndim == 0 && t3.ndim == 0 ) {
-    string aux = tipo_opr[ t1.tipo_base + opr + t3.tipo_base ];
+    string aux;
+    if(opr == "!")
+	aux = tipo_opr[opr + t3.tipo_base];
+    else
+	aux = tipo_opr[ t1.tipo_base + opr + t3.tipo_base ];
   
     if( aux == "" ) 
       erro( "O operador " + opr + " não está definido para os tipos '" +
@@ -752,6 +764,19 @@ string gera_teste_limite_array( string indice_1, Tipo tipoArray ) {
             "  " + label_end + ":;\n";
   
   return codigo;
+}
+
+Atributos format_writeln(Atributos s1){
+  Atributos aux;
+  string cod_then = "  cout << \"True\";\n  cout << endl;\n";
+  string cod_else = "  cout << \"False\";\n  cout << endl;\n";
+  if(s1.t.tipo_base == "b"){
+    aux = gera_codigo_if(s1, cod_then, cod_else);
+  }
+  else{
+    aux.c = "  cout << " + s1.v + ";\n  cout << endl;\n";;
+  }
+  return aux;
 }
 
 int main( int argc, char* argv[] )
