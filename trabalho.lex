@@ -11,7 +11,7 @@ LETRA   [A-Za-z_]
 INT     {NUMERO}+
 DOUBLE  {NUMERO}+("."{NUMERO}+)?
 ID      {LETRA}({LETRA}|{NUMERO})*
-CSTRING "'"([^\n']|"''")*"'"
+CSTRING "'"([^\n']|"\\'")*"'"
 
 COMMENT "(*"([^*]|"*"[^)])*"*)"
 
@@ -26,6 +26,7 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "🔓"    { yylval = Atributos( yytext ); return TK_BEGIN; }
 "🔒"      { yylval = Atributos( yytext ); return TK_END; }
 "💬"  { yylval = Atributos( yytext ); return TK_WRITELN; }
+"💬"  { yylval = Atributos( yytext ); return TK_SCAN; }
 "🤔"       { yylval = Atributos( yytext ); return TK_IF; }
 "⤵️"     { yylval = Atributos( yytext ); return TK_THEN; }
 "💩"     { yylval = Atributos( yytext ); return TK_ELSE; }
@@ -61,7 +62,7 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "⚡️"       { yylval = Atributos( yytext ); return TK_COMMA; }
 
 ".."       { yylval = Atributos( yytext ); return TK_PTPT; }
-":="       { yylval = Atributos( yytext ); return TK_ATRIB; }
+"📥"       { yylval = Atributos( yytext ); return TK_ATRIB; }
 "<="       { yylval = Atributos( yytext ); return TK_MEIG; }
 ">="       { yylval = Atributos( yytext ); return TK_MAIG; }
 "<>"       { yylval = Atributos( yytext ); return TK_DIF; }
