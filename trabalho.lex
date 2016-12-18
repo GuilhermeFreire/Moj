@@ -48,10 +48,17 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "©"       { yylval = Atributos( yytext ); return TK_ECHAR; }
 "🔠"       { yylval = Atributos( yytext ); return TK_ESTRING; }
 
+"👍"       { yylval = Atributos( yytext ); return TK_TRUE; }
+"👎"       { yylval = Atributos( yytext ); return TK_FALSE; }
+
 "➕"       { yylval = Atributos( yytext ); return TK_ADD; }
 "➖"       { yylval = Atributos( yytext ); return TK_SUB; }
 "✖️"       { yylval = Atributos( yytext ); return TK_MULT; }
 "➗"       { yylval = Atributos( yytext ); return TK_DIV; }
+
+"👉"       { yylval = Atributos( yytext ); return TK_ABRE_COLCH; }
+"👈"       { yylval = Atributos( yytext ); return TK_FECHA_COLCH; }
+"⚡️"       { yylval = Atributos( yytext ); return TK_COMMA; }
 
 ".."       { yylval = Atributos( yytext ); return TK_PTPT; }
 ":="       { yylval = Atributos( yytext ); return TK_ATRIB; }
