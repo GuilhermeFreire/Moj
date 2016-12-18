@@ -5,4 +5,5 @@ saida
 gerado.cc
 lex.yy.c
 gabarito
+!gabarito_files/*
 
