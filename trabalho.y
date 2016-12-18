@@ -263,7 +263,7 @@ IDS : IDS ',' TK_ID
         $$.lista_str.push_back( $1.v ); }
     ;          
 
-MAIN : BLOCO '.'
+MAIN : BLOCO
        { $$.c = "int main() { \n" + $1.c + "}\n"; } 
      ;
      

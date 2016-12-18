@@ -27,14 +27,14 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "🔒"      { yylval = Atributos( yytext ); return TK_END; }
 "💬"  { yylval = Atributos( yytext ); return TK_WRITELN; }
 "🤔"       { yylval = Atributos( yytext ); return TK_IF; }
-"Then"     { yylval = Atributos( yytext ); return TK_THEN; }
+"⤵️"     { yylval = Atributos( yytext ); return TK_THEN; }
 "💩"     { yylval = Atributos( yytext ); return TK_ELSE; }
 "🔂"      { yylval = Atributos( yytext ); return TK_FOR; }
 "To"       { yylval = Atributos( yytext ); return TK_TO; }
 "Do"       { yylval = Atributos( yytext ); return TK_DO; }
 "Array"    { yylval = Atributos( yytext ); return TK_ARRAY; }
 "Of"       { yylval = Atributos( yytext ); return TK_OF; }
-"Function" { yylval = Atributos( yytext ); return TK_FUNCTION; }
+"⚙" { yylval = Atributos( yytext ); return TK_FUNCTION; }
 "〰"      { yylval = Atributos( yytext ); return TK_MOD; }
 "🔙"      { yylval = Atributos( yytext ); return TK_RETURN; }
 
