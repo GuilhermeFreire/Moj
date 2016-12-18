@@ -13,7 +13,7 @@ DOUBLE  {NUMERO}+("."{NUMERO}+)?
 ID      {LETRA}({LETRA}|{NUMERO})*
 CSTRING "'"([^\n']|"\\'")*"'"
 
-COMMENT "(*"([^*]|"*"[^)])*"*)"
+COMMENT ✍([^\n]|"\\"[^n])*"\n"
 
 %%
 
@@ -31,7 +31,7 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "⤵️"     { yylval = Atributos( yytext ); return TK_THEN; }
 "💩"     { yylval = Atributos( yytext ); return TK_ELSE; }
 "🔂"      { yylval = Atributos( yytext ); return TK_FOR; }
-"To"       { yylval = Atributos( yytext ); return TK_TO; }
+"➡️"       { yylval = Atributos( yytext ); return TK_TO; }
 "Do"       { yylval = Atributos( yytext ); return TK_DO; }
 "Array"    { yylval = Atributos( yytext ); return TK_ARRAY; }
 "Of"       { yylval = Atributos( yytext ); return TK_OF; }

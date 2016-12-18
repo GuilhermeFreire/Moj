@@ -318,7 +318,7 @@ CMD : WRITELN
       {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
     ;   
     
-CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_DO CMD 
+CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN CMD 
           { 
             string var_fim = gera_nome_var_temp( $2.t.tipo_base );
             string label_teste = gera_label( "teste_for" );

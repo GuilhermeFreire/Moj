@@ -18,3 +18,15 @@
 🔓-> abre chaves
 🔒-> fecha chaves (blocos de código)
 ✍-> comentário
+❗️-> !
+➕-> +
+➖-> -
+➗-> /
+✖️-> *
+〰 -> %
+🚦-> switch
+⤵️ -> then
+⚙-> function
+📞-> call function
+📥-> =
+➡️-> To
