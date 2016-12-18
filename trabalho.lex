@@ -25,11 +25,11 @@ COMMENT "(*"([^*]|"*"[^)])*"*)"
 "Program"  { yylval = Atributos( yytext ); return TK_PROGRAM; }
 "🔓"    { yylval = Atributos( yytext ); return TK_BEGIN; }
 "🔒"      { yylval = Atributos( yytext ); return TK_END; }
-"WriteLn"  { yylval = Atributos( yytext ); return TK_WRITELN; }
+"💬"  { yylval = Atributos( yytext ); return TK_WRITELN; }
 "🤔"       { yylval = Atributos( yytext ); return TK_IF; }
 "Then"     { yylval = Atributos( yytext ); return TK_THEN; }
 "💩"     { yylval = Atributos( yytext ); return TK_ELSE; }
-"For"      { yylval = Atributos( yytext ); return TK_FOR; }
+"🔂"      { yylval = Atributos( yytext ); return TK_FOR; }
 "To"       { yylval = Atributos( yytext ); return TK_TO; }
 "Do"       { yylval = Atributos( yytext ); return TK_DO; }
 "Array"    { yylval = Atributos( yytext ); return TK_ARRAY; }
