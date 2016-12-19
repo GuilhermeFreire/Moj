@@ -57,7 +57,7 @@ html, body {
     text-align: center;
 }
 
-#hoverInfo{
+.hoverInfo{
     text-align: center;
     font-size: 0.8em;
     margin-top: -9px;
