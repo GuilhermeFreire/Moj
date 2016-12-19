@@ -1,31 +1,39 @@
 💾 Functions;
 
-⚙ Max🌜a, b: 🔢🌛: 🔢;
+⚙ Max🌜A, B: 🔢🌛: 🔢;
 🔓
-	🤔 a > b ⤵️
-		🔙 a;
+	🤔 A > B ⤵️
+		🔙 A;
 	💩
-		🔙 b;
+		🔙 B;
 🔒;
 
-⚙ Multiply🌜a, b: 🔢🌛: 🔢;
+⚙ Multiply🌜A, B: 🔢🌛: 🔢;
 🔓
-	🔙 🌜a ✖️ b🌛;
+	🔙 🌜A ✖️ B🌛;
 🔒;
 
-⚙ Repeat🌜str: 🔠; count: 🔢🌛: 🔢;
+⚙ Repeat🌜Str: 🔠; Count: 🔢🌛: 🔢;
 Var
-	i: 🔢;
+	Idx: 🔢;
 🔓
-	🔂 i 📥 1 ➡️ count ⤵️
-		💬🌜str🌛;
+	🔂 Idx 📥 1 ➡️ Count ⤵️
+		💬🌜Str🌛;
+	Str 📥 'altered string';
 	🔙 0;
 🔒;
+
+Var
+	Msg1: 🔠;
 
 🔓
 	💬🌜Max🌜4, 2🌛🌛;
 	💬🌜Multiply🌜10, 11🌛🌛;
-	Repeat🌜'eyy', 10🌛;
+
+	Msg1 📥 'original string';
+
+	Repeat🌜Msg1, 3🌛;
+	Repeat🌜Msg1, 1🌛;
 	✍ Repeat🌜'eyy'🌛; ✍ Numero incorreto
 	✍ Repeat🌜'wtf', 10, 0🌛; ✍ Numero incorreto
 	✍ Repeat🌜'wtf', 'a'🌛; ✍ Tipo incorreto
