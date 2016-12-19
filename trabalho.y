@@ -664,9 +664,45 @@ void inicializa_operadores() {
   tipo_opr["c<c"] = "b";
   tipo_opr["i<c"] = "b";
   tipo_opr["c<i"] = "b";
-//  tipo_opr["c<s"] = "b";
-//  tipo_opr["s<c"] = "b";
-//  tipo_opr["s<s"] = "b";
+  tipo_opr["c<s"] = "b";
+  tipo_opr["s<c"] = "b";
+  tipo_opr["s<s"] = "b";
+
+  // Resultados para o operador ">"
+  tipo_opr["i>i"] = "b";
+  tipo_opr["i>d"] = "b";
+  tipo_opr["d>i"] = "b";
+  tipo_opr["d>d"] = "b";
+  tipo_opr["c>c"] = "b";
+  tipo_opr["i>c"] = "b";
+  tipo_opr["c>i"] = "b";
+  tipo_opr["c>s"] = "b";
+  tipo_opr["s>c"] = "b";
+  tipo_opr["s>s"] = "b";
+
+  // Resultados para o operador "<="
+  tipo_opr["i<=i"] = "b";
+  tipo_opr["i<=d"] = "b";
+  tipo_opr["d<=i"] = "b";
+  tipo_opr["d<=d"] = "b";
+  tipo_opr["c<=c"] = "b";
+  tipo_opr["i<=c"] = "b";
+  tipo_opr["c<=i"] = "b";
+  tipo_opr["c<=s"] = "b";
+  tipo_opr["s<=c"] = "b";
+  tipo_opr["s<=s"] = "b";
+
+  // Resultados para o operador ">="
+  tipo_opr["i>=i"] = "b";
+  tipo_opr["i>=d"] = "b";
+  tipo_opr["d>=i"] = "b";
+  tipo_opr["d>=d"] = "b";
+  tipo_opr["c>=c"] = "b";
+  tipo_opr["i>=c"] = "b";
+  tipo_opr["c>=i"] = "b";
+  tipo_opr["c>=s"] = "b";
+  tipo_opr["s>=c"] = "b";
+  tipo_opr["s>=s"] = "b";
 
 
   // Resultados para o operador "And"
@@ -680,8 +716,17 @@ void inicializa_operadores() {
   tipo_opr["d==i"] = "b";
   tipo_opr["d==d"] = "b";
   tipo_opr["b==b"] = "b";
+  tipo_opr["s==s"] = "b";
 
-  // Resultados para o operador "="
+  // Resultados para o operador "!="
+  tipo_opr["i!=i"] = "b";
+  tipo_opr["i!=d"] = "b";
+  tipo_opr["d!=i"] = "b";
+  tipo_opr["d!=d"] = "b";
+  tipo_opr["b!=b"] = "b";
+  tipo_opr["s!=s"] = "b";
+
+  // Resultados para o operador "!"
   tipo_opr["!b"] = "b";
 }
 
@@ -791,6 +836,75 @@ Atributos gera_codigo_operador( Atributos s1, string opr, Atributos s3 ) {
              "  strncpy( " + ss.v + ", " + s1.v + ", 256 );\n" +
              "  strncat( " + ss.v + ", " + s3.v + ", 256 );\n";
     }
+    if( opr == "==" ){
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = strcmp( " + s1.v + ", " + s3.v + " );\n";
+      ss.c += "  " + ss.v + " = !" + ss.v + ";\n";
+    }
+    if( opr == "!=" ){
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = strcmp( " + s1.v + ", " + s3.v + " );\n";
+    }
+    if( opr == ">" ){
+      string var_if = gera_nome_var_temp( "b" );
+      string label_maior = gera_label( "maior" );
+      string label_end = gera_label( "end" );
+      
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = strcmp( " + s1.v + ", " + s3.v + " );\n";
+      ss.c += "  " + var_if + " = " + ss.v + " > 0;\n";
+      ss.c += "  if( " + var_if + " ) goto " + label_maior + ";\n";
+      ss.c += "  " + ss.v + " = 0;\n";
+      ss.c += "  goto " + label_end + ";\n";
+      ss.c += "  " + label_maior + ":;\n";
+      ss.c += "  " + ss.v + " = 1;\n";
+      ss.c += "  " + label_end + ":;\n";
+    }
+    if( opr == "<" ){
+      string var_if = gera_nome_var_temp( "b" );
+      string label_maior = gera_label( "maior" );
+      string label_end = gera_label( "end" );
+      
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = strcmp( " + s1.v + ", " + s3.v + " );\n";
+      ss.c += "  " + var_if + " = " + ss.v + " > 0;\n";
+      ss.c += "  if( " + var_if + " ) goto " + label_maior + ";\n";
+      ss.c += "  " + ss.v + " = 1;\n";
+      ss.c += "  goto " + label_end + ";\n";
+      ss.c += "  " + label_maior + ":;\n";
+      ss.c += "  " + ss.v + " = 0;\n";
+      ss.c += "  " + label_end + ":;\n";
+    }
+    if( opr == ">=" ){
+      string var_if = gera_nome_var_temp( "b" );
+      string label_maior = gera_label( "maior" );
+      string label_end = gera_label( "end" );
+      
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = strcmp( " + s1.v + ", " + s3.v + " );\n";
+      ss.c += "  " + var_if + " = " + ss.v + " >= 0;\n";
+      ss.c += "  if( " + var_if + " ) goto " + label_maior + ";\n";
+      ss.c += "  " + ss.v + " = 0;\n";
+      ss.c += "  goto " + label_end + ";\n";
+      ss.c += "  " + label_maior + ":;\n";
+      ss.c += "  " + ss.v + " = 1;\n";
+      ss.c += "  " + label_end + ":;\n";
+    }
+    if( opr == "<=" ){
+      string var_if = gera_nome_var_temp( "b" );
+      string label_maior = gera_label( "maior" );
+      string label_end = gera_label( "end" );
+      
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = strcmp( " + s1.v + ", " + s3.v + " );\n";
+      ss.c += "  " + var_if + " = " + ss.v + " <= 0;\n";
+      ss.c += "  if( " + var_if + " ) goto " + label_maior + ";\n";
+      ss.c += "  " + ss.v + " = 0;\n";
+      ss.c += "  goto " + label_end + ";\n";
+      ss.c += "  " + label_maior + ":;\n";
+      ss.c += "  " + ss.v + " = 1;\n";
+      ss.c += "  " + label_end + ":;\n";
+    }
   }
   else if( s1.t.tipo_base == "s" && s3.t.tipo_base == "c" ) 
     ;
@@ -808,10 +922,11 @@ Atributos gera_codigo_if( Atributos expr, string cmd_then, string cmd_else ) {
   Atributos ss;
   string label_else = gera_label( "else" );
   string label_end = gera_label( "end" );
+  string var_comp = gera_nome_var_temp( "b" );
   
   ss.c = expr.c + 
-         "  " + expr.v + " = !" + expr.v + ";\n\n" +
-         "  if( " + expr.v + " ) goto " + label_else + ";\n" +
+         "  " + var_comp + " = !" + expr.v + ";\n\n" +
+         "  if( " + var_comp + " ) goto " + label_else + ";\n" +
          cmd_then +
          "  goto " + label_end + ";\n" +
          label_else + ":;\n" +

@@ -1,0 +1,21 @@
+Program String_comparisons;
+
+Var a: 🔠;
+Var c: 🔠;
+Var b: ☯;
+
+
+🔓
+  a 📥 'xlb';
+  c 📥 'Ola';
+  b 📥 a >= c;
+  💬🌜 b 🌛;
+  b 📥 a < c;
+  💬🌜 b 🌛;
+  b 📥 a <= c;
+  💬🌜 b 🌛;
+  b 📥 a > c;
+  💬🌜 b 🌛;
+  b 📥 a = c;
+  💬🌜 b 🌛;
+🔒
