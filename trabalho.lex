@@ -77,6 +77,7 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "And"       { yylval = Atributos( yytext ); return TK_AND; }
 "Or"       { yylval = Atributos( yytext ); return TK_OR; }
 "❗️"       { yylval = Atributos( yytext ); return TK_NOT; }
+"📞"       { yylval = Atributos( yytext ); return TK_FUNC_CALL; }
 
 
 {CSTRING}  { yylval = Atributos( troca_aspas( yytext ), Tipo( "string" ) ); 
