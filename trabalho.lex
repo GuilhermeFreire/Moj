@@ -68,6 +68,8 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "👉"       { yylval = Atributos( yytext ); return TK_ABRE_COLCH; }
 "👈"       { yylval = Atributos( yytext ); return TK_FECHA_COLCH; }
 "⚡️"       { yylval = Atributos( yytext ); return TK_COMMA; }
+"📭"       { yylval = Atributos( yytext ); return TK_MEMBER; }
+
 
 ".."       { yylval = Atributos( yytext ); return TK_PTPT; }
 "📥"       { yylval = Atributos( yytext ); return TK_ATRIB; }

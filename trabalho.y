@@ -96,6 +96,7 @@ Tipo consulta_ts( string nome_var );
 string declara_variavel( string nome, Tipo tipo );
 string declara_funcao( string nome, Tipo retorno, vector<string> nomes, vector<Tipo> tipos );
 void gera_consulta_tipos( string tipo1, string tipo2 );
+Atributos gera_codigo_member(Atributos s1, Atributos s2);
 
 void empilha_ts();
 void desempilha_ts();
@@ -141,7 +142,7 @@ string includes =
 %token TK_ABRE_PAREN TK_FECHA_PAREN
 %token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING
 %token TK_ADD TK_SUB TK_MULT TK_DIV
-%token TK_RETURN TK_ABRE_COLCH TK_FECHA_COLCH TK_COMMA
+%token TK_RETURN TK_ABRE_COLCH TK_FECHA_COLCH TK_COMMA TK_MEMBER
 
 %left TK_AND TK_OR TK_NOT TK_TRUE TK_FALSE
 %nonassoc '<' '>' TK_MAIG TK_MEIG '=' TK_DIF 
@@ -512,6 +513,8 @@ E : E TK_ADD E
       blank.v = "";
       blank.t = Tipo("b");
       $$ = gera_codigo_operador( blank, "!", $2 ); }
+  | E TK_MEMBER TK_ID
+    { $$ = gera_codigo_member( $1, $3 ); }
   | TK_ABRE_PAREN E TK_FECHA_PAREN
     { $$ = $2; }
   | F
@@ -837,6 +840,71 @@ Tipo tipo_resultado( Tipo t1, string opr, Tipo t3 ) {
     return Tipo();
   }  
 } 
+
+Atributos gera_codigo_member(Atributos s1, Atributos s2){
+    Atributos aux = Atributos();
+    string codigo = "";
+    string start_for_label = gera_label("for_start");
+    string end_for_label = gera_label("for_end");
+    string contador = gera_nome_var_temp("i");
+    string check_for = gera_nome_var_temp("b");
+    string check_content = gera_nome_var_temp("b");
+    string found = gera_nome_var_temp("b");
+    Tipo tipo_array = consulta_ts(s2.v);
+    string either_one = gera_nome_var_temp("b");
+    string label_fail = gera_label("fail");
+    string temp = gera_nome_var_temp(tipo_array.tipo_base);
+
+    string total_length = gera_nome_var_temp("i");
+    int i = 0;
+    if(tipo_array.ndim < 1){
+	erro("Não é possível usar o operador MEMBER sem um array.");
+    }
+    if(s1.t.tipo_base != tipo_array.tipo_base){
+	aux.v = "0";
+    }
+    else if(tipo_array.ndim == 1){
+	codigo += s1.c + s2.c +
+		  "  " + contador + " = 0;\n" +
+		  "  " + found + " = 0;\n" +
+		  start_for_label + ":;\n" +
+		  "  " + check_for + " = " + contador + " >= " +
+		  toString(tipo_array.fim[0])+ ";\n" +
+		  "  " + either_one + " = " + check_for + " || " + found + ";\n" +
+		  "  if(" + either_one + ") goto " + end_for_label + ";\n" +
+		  "  " + temp + " = " + s2.v +"[" + contador + "];\n" +
+		  "  " + found + " = " + s1.v + " == "+ temp +";\n" +
+		  label_fail + ":;\n"
+		  "  " + contador + " = " + contador + " + 1;\n" +
+		  "  goto " + start_for_label + ";\n" +
+		  end_for_label + ":;\n";
+	aux.v = found;
+	aux.c = codigo;
+    }
+    else if(tipo_array.ndim == 2){
+	codigo += s1.c + s2.c +
+		  "  " + contador + " = 0;\n" +
+		  "  " + found + " = 0;\n" +
+		  "  " + total_length + " = " + toString(tipo_array.fim[0]) + "*" + toString(tipo_array.fim[1]) + ";\n"+
+		  start_for_label + ":;\n" +
+		  "  " + check_for + " = " + contador + " >= " +
+		  total_length + ";\n" +
+		  "  " + either_one + " = " + check_for + " || " + found + ";\n" +
+		  "  if(" + either_one + ") goto " + end_for_label + ";\n" +
+		  "  " + temp + " = " + s2.v +"[" + contador + "];\n" +
+		  "  " + found + " = " + s1.v + " == "+ temp +";\n" +
+		  label_fail + ":;\n"
+		  "  " + contador + " = " + contador + " + 1;\n" +
+		  "  goto " + start_for_label + ";\n" +
+		  end_for_label + ":;\n";
+	aux.v = found;
+	aux.c = codigo;
+    }
+    else{
+	erro("Bug sério no compilador! (gera_codigo_member)");
+    }
+    return aux;
+}
 
 Atributos gera_codigo_operador( Atributos s1, string opr, Atributos s3 ) {
   Atributos ss;
