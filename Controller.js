@@ -233,7 +233,9 @@
 
           ObjectForEach(emojiClasses, function (emojiClass, emojiDescription) {
             var li = documentCreateElement('li')
-            li.classList.add('emoji', emojiClass, 'tooltip')
+            li.classList.add('emoji')
+            li.classList.add(emojiClass)
+            li.classList.add('tooltip')
             li.title = emojiDescription;
 
             //TODO: hover
