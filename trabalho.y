@@ -318,13 +318,22 @@ INNER_BLOCO : TK_BEGIN CMDS TK_END
             { $$.c = $2.c; }
             ; 
 
-COND_SCOPE : SCOPE
-           | INNER_BLOCO
-           | CMD
+COND_BLOCO : INNER_BLOCO
+           | CMD ';'
            ;
       
 CMDS : CMD ';' CMDS
        { $$.c = $1.c + $3.c; }
+     | CMD_FOR CMDS
+       { $$.c = $1.c + $2.c; }
+     | CMD_WHILE CMDS
+       { $$.c = $1.c + $2.c; }
+     | CMD_DO_WHILE CMDS
+       { $$.c = $1.c + $2.c; }
+     | CMD_SWITCH CMDS
+       { $$.c = $1.c + $2.c; }
+     | CMD_IF CMDS
+       { $$.c = $1.c + $2.c; }
      | { $$.c = ""; }
      ;  
      
@@ -332,17 +341,13 @@ CMD : WRITELN
     | SCOPE
     | SCANLN
     | ATRIB
-    | CMD_FOR
-    | CMD_WHILE
-    | CMD_DO_WHILE
-    | CMD_SWITCH
-    | CMD_IF
     | TK_RETURN E
       {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
     | { $$.c = ""; }
     ;   
+      
     
-CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN COND_SCOPE 
+CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN COND_BLOCO 
           { 
             string var_fim = gera_nome_var_temp( $2.t.tipo_base );
             string label_teste = gera_label( "teste_for" );
@@ -364,7 +369,7 @@ CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN COND_SCOPE
           }
         ;
 
-CMD_WHILE : TK_WHILE E TK_THEN COND_SCOPE
+CMD_WHILE : TK_WHILE E TK_THEN COND_BLOCO
 	  {
 	    string label_teste = gera_label("teste_while");
 	    string label_fim = gera_label("fim_while");
@@ -394,9 +399,9 @@ CMD_DO_WHILE : TK_THEN CMD TK_WHILE E TK_UP
 	  }
 	  ;
     
-CMD_IF : TK_IF E TK_THEN COND_SCOPE
+CMD_IF : TK_IF E TK_THEN COND_BLOCO
          { $$ = gera_codigo_if( $2, $4.c, "" ); }
-       | TK_IF E TK_THEN COND_SCOPE TK_ELSE COND_SCOPE
+       | TK_IF E TK_THEN COND_BLOCO TK_ELSE COND_BLOCO
          { $$ = gera_codigo_if( $2, $4.c, $6.c ); }
        ;
 
@@ -462,6 +467,7 @@ ATRIB : TK_ID TK_ATRIB E
         } 
       | TK_ID TK_ABRE_COLCH E TK_FECHA_COLCH TK_ATRIB E
         { // Falta testar: tipo, limite do array, e se a variável existe
+	  $1.t = consulta_ts( $1.v ) ;
           gera_consulta_tipos( $1.t.tipo_base, $6.t.tipo_base );
           $$.c = $3.c + $6.c +
                  "  " + $1.v + "[" + $3.v + "] = " + $6.v + ";\n";

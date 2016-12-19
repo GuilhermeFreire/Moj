@@ -1,4 +1,4 @@
-Program local_variables_and_scope;
+💾 local_variables_and_scope;
 
 Var
   global_var_1: 🔠;

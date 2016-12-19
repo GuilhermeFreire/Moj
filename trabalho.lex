@@ -22,7 +22,7 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 {COMMENT}  {}
 
 "Var"      { yylval = Atributos( yytext ); return TK_VAR; }
-"Program"  { yylval = Atributos( yytext ); return TK_PROGRAM; }
+"💾"  { yylval = Atributos( yytext ); return TK_PROGRAM; }
 "🔓"    { yylval = Atributos( yytext ); return TK_BEGIN; }
 "🔒"      { yylval = Atributos( yytext ); return TK_END; }
 
