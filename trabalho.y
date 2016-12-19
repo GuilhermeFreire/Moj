@@ -66,7 +66,7 @@ struct Tipo {
 };
 
 struct Atributos {
-  string v, c, d; // Valor, tipo, declarações e código gerado.
+  string v, c; // Valor, tipo e código gerado.
   Tipo t;
   vector<string> lista_str; // Uma lista auxiliar de strings.
   vector<Tipo> lista_tipo; // Uma lista auxiliar de tipos.
