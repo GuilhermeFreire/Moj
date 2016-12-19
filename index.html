@@ -5,13 +5,13 @@
     <meta id="emojiClasses"
           data-class='{
                         "cout": "emoji_1f4ac",
-                        "cin": "emoji_1f3a5",
+                        "cin": "emoji_1f4f9",
                         "for": "emoji_1f502",
-                        "while":"emoji_1f501",
+                        "while":"emoji_1f504",
                         "if": "emoji_1f914",
                         "else": "emoji_1f4a9",
                         "int": "emoji_1f522",
-                        "string": "emoji_1f521",
+                        "string": "emoji_1f520",
                         "double": "emoji_00ae",
                         "boolean": "emoji_262f",
                         "char": "emoji_00a9",
@@ -49,6 +49,12 @@
     <div id="editor">
         <ul>
         </ul>
+        <p id="hoverInfo">Mantenha o mouse sobre os emojis para ver uma breve descrição a respeito de cada um.</p>
+        <div class="menu">
+            <button id="exportCodeBtn">Export Code</button>
+            <button><label for="importCodeBtn">Import Code</label></button>
+            <input id="importCodeBtn" type="file" hidden/>
+        </div>
         <div class="textArea" contentEditable="true"></div>
     </div>
 

@@ -13,8 +13,11 @@ html, body {
 }
 
 #editor {
+    top: 0;
     width: 100%;
+    left: 0;
     height: 100%;
+    position: absolute;
 }
 
 #editor > ul {
@@ -32,9 +35,10 @@ html, body {
     outline: none;
     border: solid #ccc 1px;
     margin: 1%;
-    height: 100%;
-    width: 98%;
+    height: 82.7%;
+    width: 97.8%;
     font-size: 2em;
+    overflow: auto;
 }
 
 #editor > .textArea > img.emoji {
@@ -47,4 +51,15 @@ html, body {
     /*bottom: -0.2em;*/
     /*position: relative;*/
     pointer-events: none;
+}
+
+#editor > .menu{
+    text-align: center;
+}
+
+#hoverInfo{
+    text-align: center;
+    font-size: 0.8em;
+    margin-top: -9px;
+    color: orange;
 }

@@ -133,7 +133,9 @@
   {
     editor: {
       textArea: '#editor > .textArea',
-      buttons: '#editor > ul'
+      buttons: '#editor > ul',
+      exportBtn: '#editor > .menu > #exportCodeBtn',
+      importBtn: '#editor > .menu > #importCodeBtn'
     },
     emojiClasses: '#emojiClasses'
   },
@@ -158,7 +160,7 @@
         }
       },
       editor: {
-        textArea: function (element) {
+        textArea: function (element, controller) {
           var textAreaLastRange = null
 
           element.focus()
@@ -184,29 +186,49 @@
             focus: HTMLElement.prototype.focus.bind(element),
             appendChild: Node.prototype.appendChild.bind(element),
             exportCode: function () {
-              var code = ''
-              var emojiClass
+              var emojiClasses = controller.emojiClasses.getClasses();
 
-              element.childNodes.forEach(function (node) {
-                console.log(node)
-                if (node instanceof window.Text) {
-                  code += node.nodeValue
-                } else if (node instanceof HTMLElement) {
-                  console.log(node.tagName)
-                  switch (node.tagName) {
-                    case 'BR':
-                      code += '\n'
-                      break;
-                    case 'IMG':
-                      emojiClass = node.classList[1].replace('emoji_', '')
-                      code += String.fromCharCode(parseInt(emojiClass, 16))
-                  }
-                }
+              var code = element.innerHTML
+
+              console.log(code);
+
+              code = code.replace(new RegExp('&nbsp;&nbsp;&nbsp;&nbsp;', 'g'), "\t")
+              code = code.replace(new RegExp('&nbsp;', 'g'), ' ')
+              code = code.replace(new RegExp('<br>', 'g'), '\n')
+
+              code = code.replace(new RegExp('&amp;', 'g'), '&').replace(new RegExp('&lt;', 'g'), '<').replace(new RegExp('&gt;', 'g'), '>').replace(new RegExp('&quot;', 'g'), '"');
+
+              ObjectForEach(emojiClasses, function (value) {
+                console.log('<img class="emoji ' + value + '">')
+                code = code.replace(new RegExp('<img class="emoji ' + value + '">', 'g'), String.fromCodePoint(parseInt(value.split('_')[1], 16)))
               })
 
+              console.log(code);
+
               return code
+            },
+            importCode: function (code) {
+              var emojiClasses = controller.emojiClasses.getClasses();
+
+              console.log(code)
+
+              code = code.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+              code = code.replace(/ /g, '&nbsp;')
+              code = code.replace(/(?:\r\n|\r|\n)/g, '<br>')
+
+              //code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+              ObjectForEach(emojiClasses, function (value) {
+                code = code.replace(new RegExp(String.fromCodePoint(parseInt(value.split('_')[1], 16)), 'g'), "<img class='emoji " + value + "'>")
+              })
+
+
+              console.log(code)
+
+              element.innerHTML = ''
+              element.focus()
+              pasteHtmlAtCaret(code)
             }
-            // TODO: appendText
           }
         },
         buttons: function (element, controller) {
@@ -218,19 +240,50 @@
 
           window.exportCode = textAreaCtrl.exportCode
 
-          ObjectForEach(emojiClasses, function (emojiClass) {
+          ObjectForEach(emojiClasses, function (emojiClass, emojiDescription) {
             var li = documentCreateElement('li')
-            li.classList.add('emoji', emojiClass)
+            li.classList.add('emoji', emojiClass, 'tooltip')
+            li.title = emojiDescription;
 
             //TODO: hover
 
             li.addEventListener('mousedown', function (e) {
               textAreaCtrl.focus()
-              pasteHtmlAtCaret("<img class='emoji " + emojiClass + "'></img>")
+              pasteHtmlAtCaret("<img class='emoji " + emojiClass + "'>")
               e.preventDefault()
             })
 
             element.appendChild(li)
+          })
+        },
+        exportBtn: function(element, controller){
+          var textAreaCtrl, downloadElement
+          textAreaCtrl = controller.editor.textArea
+          element.addEventListener('click', function () {
+            downloadElement= document.createElement('a');
+            downloadElement.setAttribute('href', 'data:text/text;charset=utf-8,' + encodeURI(textAreaCtrl.exportCode()));
+            downloadElement.setAttribute('download', "Code.moj");
+            downloadElement.click();
+            //removeChild(downloadElement) ???
+          })
+        },
+        importBtn: function(element, controller) {
+          var textAreaCtrl = controller.editor.textArea
+
+          element.addEventListener('change', function () {
+            var file = element.files[0];
+            if (file) {
+              var reader = new FileReader();
+              reader.readAsText(file, "UTF-8");
+              reader.onload = function (evt) {
+                textAreaCtrl.importCode(evt.target.result);
+              }
+              reader.onerror = function () {
+                alert("Erro ao ler arquivo");
+              }
+            }
+
+            element.value = "";
           })
         }
       }
