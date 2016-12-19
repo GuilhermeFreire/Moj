@@ -190,8 +190,6 @@
 
               var code = element.innerHTML
 
-              console.log(code);
-
               code = code.replace(new RegExp('&nbsp;&nbsp;&nbsp;&nbsp;', 'g'), "\t")
               code = code.replace(new RegExp('&nbsp;', 'g'), ' ')
               code = code.replace(new RegExp('<br>', 'g'), '\n')
@@ -199,18 +197,13 @@
               code = code.replace(new RegExp('&amp;', 'g'), '&').replace(new RegExp('&lt;', 'g'), '<').replace(new RegExp('&gt;', 'g'), '>').replace(new RegExp('&quot;', 'g'), '"');
 
               ObjectForEach(emojiClasses, function (value) {
-                console.log('<img class="emoji ' + value + '">')
                 code = code.replace(new RegExp('<img class="emoji ' + value + '">', 'g'), String.fromCodePoint(parseInt(value.split('_')[1], 16)))
               })
-
-              console.log(code);
 
               return code
             },
             importCode: function (code) {
               var emojiClasses = controller.emojiClasses.getClasses();
-
-              console.log(code)
 
               code = code.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
               code = code.replace(/ /g, '&nbsp;')
@@ -222,8 +215,6 @@
                 code = code.replace(new RegExp(String.fromCodePoint(parseInt(value.split('_')[1], 16)), 'g'), "<img class='emoji " + value + "'>")
               })
 
-
-              console.log(code)
 
               element.innerHTML = ''
               element.focus()
