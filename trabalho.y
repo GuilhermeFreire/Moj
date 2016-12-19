@@ -181,9 +181,9 @@ FUNCTION : { empilha_ts(); }  CABECALHO ';' CORPO { desempilha_ts(); } ';'
 
 CABECALHO : TK_FUNCTION TK_ID OPC_PARAM ':' TIPO_ID
             { 
-              Tipo tipo( traduz_nome_tipo_pascal( $5.v ) );
-              
-              $$.c = declara_funcao( $2.v, tipo, $3.lista_str, $3.lista_tipo );
+              Tipo retorno(traduz_nome_tipo_pascal($5.v));
+              insere_funcao_ts($2.v, retorno, $3.lista_tipo);
+              $$.c = declara_funcao($2.v, retorno, $3.lista_str, $3.lista_tipo);
             }
           ;
           
@@ -339,6 +339,7 @@ CMDS : CMD ';' CMDS
      ;  
      
 CMD : WRITELN
+    | E
     | SCOPE
     | SCANLN
     | ATRIB
@@ -565,27 +566,38 @@ F : TK_CINT
   | TK_ID 
     { $$.v = $1.v; $$.t = consulta_ts( $1.v ); $$.c = $1.c; }  
   | TK_ID TK_ABRE_PAREN EXPRS TK_FECHA_PAREN 
-    { $$.t = Tipo( "i" ); //consulta_ts( $1.v );
-    // Falta verficar o tipo da função e os parametros.
-      $$.v = gera_nome_var_temp( $$.t.tipo_base ); 
-      $$.c = $3.c + "  " + $$.v + " = " + $1.v + "( ";
-      
-      for( int i = 0; i < $3.lista_str.size() - 1; i++ )
-        $$.c += $3.lista_str[i] + ", ";
-        
-      $$.c += $3.lista_str[$3.lista_str.size()-1] + " );\n"; 
+    {
+	// $$.t = Tipo( "i" );
+	Tipo tipo_func = consulta_ts($1.v);
+	$$.t = Tipo(tipo_func.retorno[0]);
+	$$.v = gera_nome_var_temp($$.t.tipo_base); 
+
+	$$.c = $3.c + "  " + $$.v + " = " + $1.v + "( ";
+	for( int i = 0; i < $3.lista_str.size() - 1; ++i)
+		$$.c += $3.lista_str[i] + ", ";
+	$$.c += $3.lista_str[$3.lista_str.size()-1] + " );\n"; 
+
+	// Checagem de tipos
+	if (tipo_func.params.size() != $3.lista_tipo.size())
+		erro("Numero incorreto de argumentos");
+
+	for (int i = 0; i < tipo_func.params.size(); ++i)
+		if ($3.lista_tipo[i].tipo_base != tipo_func.params[i].tipo_base)
+			erro("Tipo incorreto de argumento");
     } 
   ;
-  
-  
+
 EXPRS : EXPRS ',' E
         { $$ = Atributos();
           $$.c = $1.c + $3.c;
+          $$.lista_tipo = $1.lista_tipo; //
+          $$.lista_tipo.push_back( $3.t ); //
           $$.lista_str = $1.lista_str;
           $$.lista_str.push_back( $3.v ); }
       | E 
         { $$ = Atributos();
           $$.c = $1.c;
+          $$.lista_tipo.push_back( $1.t ); //
           $$.lista_str.push_back( $1.v ); }
       ;  
   
@@ -783,11 +795,19 @@ void insere_var_ts( string nome_var, Tipo tipo ) {
   ts[ts.size()-1][ nome_var ] = tipo;
 }
 
-void insere_funcao_ts( string nome_func, Tipo retorno, vector<Tipo> params ) {
-  if( ts[ts.size()-2].find( nome_func ) != ts[ts.size()-2].end() )
-    erro( "Função já declarada: " + nome_func );
-    
-  ts[ts.size()-2][ nome_func ] = Tipo( retorno, params );
+void insere_funcao_ts(string nome_func, Tipo retorno, vector<Tipo> params)
+{
+ 	if (ts[0].find(nome_func) != ts[0].end())
+		erro("Função já declarada " + nome_func);
+	ts[0][nome_func] = Tipo(retorno, params);
+
+	// ATTN: Talvez uma péssima idéia
+	/*
+	if( ts[ts.size()-2].find( nome_func ) != ts[ts.size()-2].end() )
+	erro( "Função já declarada: " + nome_func );
+
+	ts[ts.size()-2][ nome_func ] = Tipo( retorno, params );
+	*/
 }
 
 string toString( int n ) {
