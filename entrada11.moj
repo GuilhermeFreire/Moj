@@ -1,0 +1,16 @@
+💾 String_concat;
+
+Var s1, s2: 🔠;
+    num1: 🔢;
+    num2: ®;
+
+🔓
+  s1 📥 'Initial string ';
+  s2 📥 'secondary string';
+  num1📥 3;
+  num2📥 1.23;
+  💬🌜s1🌛;
+  💬🌜s1 ➕ s2🌛;
+  💬🌜s1 ➕ num1🌛;
+  💬🌜s1 ➕ num2🌛;
+🔒

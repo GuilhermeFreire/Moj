@@ -935,9 +935,9 @@ Atributos gera_codigo_operador( Atributos s1, string opr, Atributos s3 ) {
 			fmt3 = "%p";
 		}
 			
-
 		ss.c  = s1.c + s3.c;
-		ss.c += "snprintf(" + ss.v + ", 256, \"" + fmt1 + fmt3 + "\"," + s1.v + ", " + s3.v + ");\n";
+		ss.c += "  snprintf(" + ss.v + ", 256, \"" + fmt1 + fmt3 + "\"," + s1.v + ", " + s3.v + ");\n";
+	return ss;
 	}
 
   if( s1.t.tipo_base == "s" && s3.t.tipo_base == "s" ){

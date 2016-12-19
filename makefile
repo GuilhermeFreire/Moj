@@ -1,5 +1,5 @@
-all: remove trabalho entrada10.moj gabarito
-	./trabalho < entrada10.moj > gerado.cc
+all: remove trabalho entrada11.moj gabarito
+	./trabalho < entrada11.moj > gerado.cc
 	./gabarito < gerado.cc
 	g++ -o saida gerado.cc
 	./saida
