@@ -25,7 +25,9 @@
 ✖️-> *
 〰 -> %
 🚦-> switch
+🚥-> case
 ⤵️ -> then
+⤴️-> up
 ⚙-> function
 📞-> call function
 📥-> =

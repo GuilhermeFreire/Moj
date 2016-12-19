@@ -1,11 +1,18 @@
 Program Loops;
 
-Var count: 🔢;
+Var
+  count: 🔢;
+  teste: ®;
+  bool_teste, a, b: ☯;
 ✍ Todos os loops disponíveis em Moj.
 🔓
+  ✍For
   🔂 count 📥 3 ➡️ 10 ⤵️
     💬🌜count🌛;
+  ✍While
   🔄 count < 20 ⤵️
     count 📥 count ➕ 2;
   💬🌜count🌛;
+  teste 📥 🌜4.5 ✖️ 4 ➕ 1🌛;
+  💬🌜teste🌛;
 🔒

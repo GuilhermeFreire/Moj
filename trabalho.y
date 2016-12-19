@@ -70,6 +70,7 @@ struct Atributos {
   Tipo t;
   vector<string> lista_str; // Uma lista auxiliar de strings.
   vector<Tipo> lista_tipo; // Uma lista auxiliar de tipos.
+  vector<Atributos> lista_atr; // Uma lista auxiliar de atributos.
   
   Atributos() {} // Constutor vazio
   Atributos( string valor ) {
@@ -79,6 +80,12 @@ struct Atributos {
   Atributos( string valor, Tipo tipo ) {
     v = valor;
     t = tipo;
+  }
+
+  Atributos( string valor, Tipo tipo, string code) {
+    v = valor;
+    t = tipo;
+    c = code;
   }
 };
 
@@ -328,6 +335,7 @@ CMD : WRITELN
     | CMD_FOR
     | CMD_WHILE
     | CMD_DO_WHILE
+    | CMD_SWITCH
     | TK_RETURN E
       {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
     ;   
@@ -390,6 +398,41 @@ CMD_IF : TK_IF E TK_THEN COND_SCOPE
          { $$ = gera_codigo_if( $2, $4.c, $6.c ); $$.d = $4.d + $6.d; }  
        ;
 
+CMD_SWITCH : TK_SWITCH TK_ABRE_PAREN TK_ID TK_FECHA_PAREN TK_BEGIN CASES TK_END
+	     { 
+		string codigo = "";
+		vector<string> labels;
+		vector<string> temp_vars;
+		string end_label = gera_label("end_switch");
+		int i = 0;
+		for(i = 0; i < $6.lista_atr.size(); i++){
+		    codigo += $6.lista_atr[i].c;
+		    temp_vars.push_back(gera_nome_var_temp("b"));
+		    codigo += "  " + temp_vars[temp_vars.size()-1] + " = "+
+				$6.lista_atr[i].v + " == " + $3.v + ";\n";
+		}
+
+		for(i = 0; i < $6.lista_atr.size(); i++){
+		    labels.push_back(gera_label("case"));
+		    codigo += "  if( " + temp_vars[i] + " ) goto "+
+				labels[labels.size()-1] + ";\n";
+		}
+		for(i = 0; i < $6.lista_atr.size(); i++){
+		    codigo += labels[i] + ":;\n"+ $6.lista_str[i]+
+				"  goto " + end_label + ";\n";
+		}
+		$$.c = codigo + end_label + ":;\n";
+	     }
+	   ;
+
+CASES : CASES TK_CASE E ':' BLOCO
+	{
+	  $$  = $1;
+	  $$.lista_atr.push_back( $3 );
+	  $$.lista_str.push_back( $5.c );
+	}
+      |{$$ = Atributos();}
+      ;
 
 WRITELN : TK_WRITELN TK_ABRE_PAREN E TK_FECHA_PAREN
           { Atributos cod_print = format_writeln($3);
@@ -636,7 +679,9 @@ void inicializa_operadores() {
   tipo_opr["i==d"] = "b";
   tipo_opr["d==i"] = "b";
   tipo_opr["d==d"] = "b";
+  tipo_opr["b==b"] = "b";
 
+  // Resultados para o operador "="
   tipo_opr["!b"] = "b";
 }
 

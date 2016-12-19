@@ -1,0 +1,13 @@
+Program HelloWorld;
+
+Var a: 🔠;
+Var c: 🔠;
+Var b: 🔠;
+
+
+🔓
+  a 📥 'Lorem ipsum dolor sit amet, mauris augue tincidunt consectetur arcu nunc, donec consectetuer tempor id suspendisse orci, massa est purus vitae sem, phasellus amet vel dis natoque vestibulum inceptos. Habitant ut convallis et, magna nam faucibus ut ornare sapien pede, malesuada eros vel, vel erat nunc felis. Libero maecenas potenti fermentum massa, bibendum faucibus quam nec wisi adipiscing maecenas, malesuada praesent praesent vestibulum ante a, bibendum fringilla cras libero id ante duis. Morbi non mauris rutrum, in lorem nunc nunc, in vitae diam. Congue sed ut, condimentum lobortis, sociosqu non ultrices amet, nibh nec aenean cupiditate sodales. Aliquam scelerisque consequat, nisi sint euismod id elit. Morbi eros bibendum a auctor erat, mauris vitae sagittis tristique minim ornare, aliquet ullamcorper turpis sit pellentesque, eu qui amet dis, quis auctor lectus wisi sit ac. Proin et in tempus quis phasellus cras, dolor libero, convallis in dignissim. Sodales arcu per vitae turpis quis lobortis, elit maecenas faucibus cras ut aliquam sociis, cras nibh id ultricies, ut nulla diam. Elit lorem erat feugiat interdum eum, et et eleifend ut tincidunt, aliquam nonummy lectus amet wisi malesuada, consectetuer erat saepe, venenatis ad pellentesque. Dignissim eros phasellus luctus, varius at, fringilla erat neque lobortis augue rutrum metus. Volutpat aenean mus eligendi, quis massa commodo neque accumsan pellentesque, fringilla luctus, sit hendrerit massa. Neque vestibulum dui penatibus, dui fermentum volutpat, in rutrum repellat ipsum curabitur in urna. Faucibus ullamcorper massa est nunc, neque lectus amet. In gravida libero, nascetur sed feugiat tempore magnis, mi neque ac ultricies, pulvinar ut dui odio. Imperdiet hac lacus in curabitur. Magnis rutrum rutrum egestas, nulla urna rhoncus dictumst venenatis, metus odio dui officia cursus per sed, eget est eleifend accumsan nam, wisi id tellus enim suspendisse. At torquent facilisi dolor urna nec, nec lorem vivamus ligula ac vestibulum hymenaeos, placerat mauris a augue egestas pede tortor, id accumsan suspendisse augue erat amet justo, nonummy nibh mauris turpis suspendisse fringilla pede. Nec magna, ac vestibulum ut libero feugiat nulla. Et sapien in, fermentum vitae gravida urna ratione sit, justo morbi, est rutrum, integer consequat id arcu.';
+  c 📥 'GAGAGAGAGAGAGA';
+  b 📥 a ➕ c;
+  💬🌜 b 🌛;
+🔒
