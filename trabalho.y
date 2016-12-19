@@ -329,6 +329,7 @@ CMDS : CMD ';' CMDS
      ;  
      
 CMD : WRITELN
+    | SCOPE
     | SCANLN
     | ATRIB
     | CMD_FOR
