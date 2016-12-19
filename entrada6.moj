@@ -5,7 +5,8 @@ Var
 🔓
   global_var_1 📥 'I am a global string!';
   💬🌜global_var_1🌛;
-  Var local_var_1: 🔠;
+  Var
+    local_var_1: 🔠;
   🔓
     ✍Local variables only exist within their scopes.
     local_var_1 📥 'Whaat?! I am a LOCAL variable!';

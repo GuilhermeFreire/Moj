@@ -307,40 +307,41 @@ MAIN : BLOCO
 BLOCO : TK_BEGIN { var_temp.push_back( "" );} CMDS TK_END
         { string vars = var_temp[var_temp.size()-1];
           var_temp.pop_back();
-          $$.c = vars + $3.d + $3.c; }
+          $$.c = vars + $3.c; }
       ;  
 
-SCOPE : { empilha_ts(); } TK_VAR VARS BLOCO { desempilha_ts(); }
-        { $$.c = $4.c; $$.d = $3.c; }
+SCOPE : { empilha_ts(); } TK_VAR VARS INNER_BLOCO { desempilha_ts(); }
+        { $$.c = $4.c; var_temp[var_temp.size()-1] += $3.c; }
         ;
 
+INNER_BLOCO : TK_BEGIN CMDS TK_END
+            { $$.c = $2.c; }
+            ; 
+
 COND_SCOPE : SCOPE
-           | BLOCO
-           | CMD ';'
+           | INNER_BLOCO
+           | CMD
            ;
       
 CMDS : CMD ';' CMDS
-       { $$.c = $1.c + $3.c; $$.d = $1.d + $3.d; }
-     | SCOPE CMDS
-       { $$.c = $1.c + $2.c; $$.d = $1.d + $2.d; }
-     | CMD_IF CMDS
-       { $$.c = $1.c + $2.c; $$.d = $1.d + $2.d; }
+       { $$.c = $1.c + $3.c; }
      | { $$.c = ""; }
-     ;   
+     ;  
      
 CMD : WRITELN
     | SCANLN
     | ATRIB
-    | BLOCO
     | CMD_FOR
     | CMD_WHILE
     | CMD_DO_WHILE
     | CMD_SWITCH
+    | CMD_IF
     | TK_RETURN E
       {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
+    | { $$.c = ""; }
     ;   
     
-CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN CMD 
+CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN COND_SCOPE 
           { 
             string var_fim = gera_nome_var_temp( $2.t.tipo_base );
             string label_teste = gera_label( "teste_for" );
@@ -362,7 +363,7 @@ CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN CMD
           }
         ;
 
-CMD_WHILE : TK_WHILE E TK_THEN CMD
+CMD_WHILE : TK_WHILE E TK_THEN COND_SCOPE
 	  {
 	    string label_teste = gera_label("teste_while");
 	    string label_fim = gera_label("fim_while");
@@ -393,9 +394,9 @@ CMD_DO_WHILE : TK_THEN CMD TK_WHILE E TK_UP
 	  ;
     
 CMD_IF : TK_IF E TK_THEN COND_SCOPE
-         { $$ = gera_codigo_if( $2, $4.c, "" ); $$.d = $4.d; }  
+         { $$ = gera_codigo_if( $2, $4.c, "" ); }
        | TK_IF E TK_THEN COND_SCOPE TK_ELSE COND_SCOPE
-         { $$ = gera_codigo_if( $2, $4.c, $6.c ); $$.d = $4.d + $6.d; }  
+         { $$ = gera_codigo_if( $2, $4.c, $6.c ); }
        ;
 
 CMD_SWITCH : TK_SWITCH TK_ABRE_PAREN TK_ID TK_FECHA_PAREN TK_BEGIN CASES TK_END
@@ -631,8 +632,14 @@ void inicializa_operadores() {
   tipo_opr["d+i"] = "d";
   tipo_opr["d+d"] = "d";
   tipo_opr["s+s"] = "s";
-  tipo_opr["c+s"] = "s";
   tipo_opr["s+c"] = "s";
+  tipo_opr["s+i"] = "s";
+  tipo_opr["s+d"] = "s";
+  tipo_opr["s+b"] = "s";
+  tipo_opr["c+s"] = "s";
+  tipo_opr["i+s"] = "s";
+  tipo_opr["d+s"] = "s";
+  tipo_opr["b+s"] = "s";
   tipo_opr["c+c"] = "s";
  
   // Resultados para o operador "-"
@@ -830,12 +837,35 @@ Atributos gera_codigo_operador( Atributos s1, string opr, Atributos s3 ) {
   ss.t = tipo_resultado( s1.t, opr, s3.t );
   ss.v = gera_nome_var_temp( ss.t.tipo_base );
   
+  if (opr == "+" && (s1.t.tipo_base == "s" || s3.t.tipo_base == "s")) {
+		const char *fmt1, *fmt3;
+
+		if (s1.t.tipo_base == "s") fmt1 = "%s";
+		else if (s1.t.tipo_base == "c") fmt1 = "%c";
+		else if (s1.t.tipo_base == "i") fmt1 = "%d";
+		else if (s1.t.tipo_base == "d") fmt1 = "%f";
+		else if (s1.t.tipo_base == "b") fmt1 = "%d"; // TEMP
+		else {
+			fprintf(stderr, "Unknown: `%s`\n", &s1.t.tipo_base[0]);
+			fmt1 = "%p";
+		}
+
+		if (s3.t.tipo_base == "s") fmt3 = "%s";
+		else if (s3.t.tipo_base == "c") fmt3 = "%c";
+		else if (s3.t.tipo_base == "i") fmt3 = "%d";
+		else if (s3.t.tipo_base == "d") fmt3 = "%f";
+		else if (s3.t.tipo_base == "b") fmt3 = "%d"; // TEMP
+		else {
+			fprintf(stderr, "Unknown: `%s`\n", &s3.t.tipo_base[0]);
+			fmt3 = "%p";
+		}
+			
+
+		ss.c  = s1.c + s3.c;
+		ss.c += "snprintf(" + ss.v + ", 256, \"" + fmt1 + fmt3 + "\"," + s1.v + ", " + s3.v + ");\n";
+	}
+
   if( s1.t.tipo_base == "s" && s3.t.tipo_base == "s" ){
-    if( opr == "+" ){
-      ss.c = s1.c + s3.c + // Codigo das expressões dos filhos da arvore.
-             "  strncpy( " + ss.v + ", " + s1.v + ", 256 );\n" +
-             "  strncat( " + ss.v + ", " + s3.v + ", 256 );\n";
-    }
     if( opr == "==" ){
       ss.c = s1.c + s3.c;
       ss.c += "  " + ss.v + " = strcmp( " + s1.v + ", " + s3.v + " );\n";
