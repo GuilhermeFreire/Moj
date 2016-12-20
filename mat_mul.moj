@@ -1,5 +1,8 @@
 💾 Multiplicacao_Matrizes;
 
+✍ATENÇÃO: O For na nossa linguagem itera até o limite inclusive
+✍         Por essa razão, tivemos que subtrair 1 dos limites.
+
 Var seed: 🔢;
 
 ⚙ pseudo_random🌜🌛: 🔢;
@@ -12,16 +15,21 @@ Var aux: 🔢;
 	🔙 aux; 
 🔒;
 
-⚙ multiplica🌜a: Array👉3⚡️4👈 Of ®, b: Array👉4⚡️2👈 Of ®, lin_a: 🔢, col_a: 🔢, lin_b: 🔢, col_b: 🔢, c: Array👉3⚡️2👈 Of ®🌛: 🔢;
+⚙ multiplica🌜a: Array👉3⚡️4👈 Of ®; b: Array👉4⚡️2👈 Of ®; lin_a: 🔢; col_a: 🔢; lin_b: 🔢; col_b: 🔢; c: Array👉3⚡️2👈 Of ®🌛: 🔢;
 Var i, j, k: 🔢;
 🔓
-	🤔🌜lin_b 🚫 lin_a🌛⤵️
+	🤔🌜lin_b 🚫 col_a🌛⤵️🔓
 		💬🌜'Matrizes incompativeis para multiplicação'🌛;
 		⁉️;
+	🔒
 
-	🔂 i 📥 1 ➡️ lin_a ⤵️🔓
-		🔂 j 📥 1 ➡️ lin_a ⤵️🔓
-			🔂 k 📥 1 ➡️ lin_a ⤵️🔓
+	lin_a 📥 lin_a ➖ 1;
+	col_b 📥 col_b ➖ 1;
+	lin_b 📥 lin_b ➖ 1;
+	
+	🔂 i 📥 0 ➡️ lin_a ⤵️🔓
+		🔂 j 📥 0 ➡️ col_b ⤵️🔓
+			🔂 k 📥 0 ➡️ lin_b ⤵️🔓
 				c👉i⚡️j👈 📥 c👉i⚡️j👈 ➕ a👉i⚡️k👈 ➕ b👉k⚡️j👈; 
 			🔒		
 		🔒	
@@ -29,16 +37,15 @@ Var i, j, k: 🔢;
 	🔙 0; 
 🔒;
 
-⚙ imprime🌜m: Array👉3⚡️2👈 Of ®, l, c: 🔢🌛: 🔢;
+⚙ imprime🌜m: Array👉3⚡️2👈 Of ®; l, c: 🔢🌛: 🔢;
 Var i, j: 🔢;
 🔓
-	🤔🌜lin_b 🚫 lin_a🌛⤵️
-		💬🌜'Matrizes incompativeis para multiplicação'🌛;
-		⁉️;
+	l 📥 l ➖ 1;
+	c 📥 c ➖ 1;
 
-	🔂 i 📥 1 ➡️ lin_a ⤵️🔓
+	🔂 i 📥 0 ➡️ l ⤵️🔓
 		💬🌜''🌛;
-		🔂 j 📥 1 ➡️ lin_a ⤵️🔓
+		🔂 j 📥 0 ➡️ c ⤵️🔓
 			💬🌜m👉i⚡️j👈🌛;	
 		🔒	
 	🔒
@@ -49,24 +56,25 @@ Var i, j: 🔢;
 Var a: Array👉3⚡️4👈 Of ®;
 	b: Array👉4⚡️2👈 Of ®;
 	c: Array👉3⚡️2👈 Of ®;
+	i, j, k: 🔢;
 🔓
-	🔂 i 📥 1 ➡️ 3 ⤵️🔓
-		💬🌜''🌛;
-		🔂 j 📥 1 ➡️ 4 ⤵️🔓
+	seed 📥 5323;
+	🔂 i 📥 0 ➡️ 2 ⤵️🔓
+		🔂 j 📥 0 ➡️ 3 ⤵️🔓
 			a👉i⚡️j👈	📥 🌜pseudo_random🌜🌛 〰 10🌛;
 		🔒	
 	🔒
 
-	🔂 i 📥 1 ➡️ 3 ⤵️🔓
-		💬🌜''🌛;
-		🔂 j 📥 1 ➡️ 4 ⤵️🔓
+	🔂 i 📥 0 ➡️ 3 ⤵️🔓
+		🔂 j 📥 0 ➡️ 1 ⤵️🔓
 			b👉i⚡️j👈	📥 🌜pseudo_random🌜🌛 〰 10🌛;
 		🔒	
 	🔒
 
 	multiplica🌜 a, b, 3, 4, 4, 2, c 🌛;
-	
+
 	imprime🌜 c, 3, 2 🌛;
-	imprime🌜 c, 3, 3 🌛; ✍ Deve dar erro de limites de array
+
+	✍imprime🌜 c, 3, 3 🌛; ✍ Deve dar erro de limites de array
 
 🔒

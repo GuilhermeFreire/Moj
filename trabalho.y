@@ -206,7 +206,7 @@ CABECALHO : TK_FUNCTION TK_ID OPC_PARAM ':' TIPO_ID
           
 OPC_PARAM : TK_ABRE_PAREN PARAMS TK_FECHA_PAREN
             { $$ = $2; }
-          |
+          | TK_ABRE_PAREN TK_FECHA_PAREN
             { $$ = Atributos(); }
           ;
           
@@ -404,6 +404,7 @@ CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN COND_BLOCO
             string condicao = gera_nome_var_temp( "b" );
           
             // Falta verificar os tipos... perde ponto se não o fizer.
+	    gera_consulta_tipos( $2.t.tipo_base, $4.t.tipo_base );
             $$.c =  $4.c + $6.c +
                     "  " + $2.v + " = " + $4.v + ";\n" +
                     "  " + var_fim + " = " + $6.v + ";\n" +
@@ -517,6 +518,26 @@ SCANLN : TK_SCANLN TK_ABRE_PAREN TK_ID TK_FECHA_PAREN
 	   $3.t = consulta_ts($3.v);
 	   $$.c = "  cin >> " + $3.v + ";\n";
 	 }
+	 | TK_SCANLN TK_ABRE_PAREN TK_ID TK_ABRE_COLCH E TK_FECHA_COLCH TK_FECHA_PAREN
+	 { 
+	   $3.t = consulta_ts($3.v);
+	    string offset = gera_nome_var_temp("i");
+	   $$.c = $5.c + "  " + offset + " = " + $5.v;
+	   if($3.t.tipo_base == "s")
+		$$.c += " * 256";
+  	   $$.c + gera_teste_limite_array( offset, $3.t );
+	   $$.c += ";\n  cin >> " + $3.v + "[" + offset + "];\n";
+	 }
+	 | TK_SCANLN TK_ABRE_PAREN TK_ID TK_ABRE_COLCH E TK_COMMA E TK_FECHA_COLCH TK_FECHA_PAREN
+	 { 
+	   $3.t = consulta_ts($3.v);
+	    string offset = gera_nome_var_temp("i");
+	   $$.c = $5.c + "  " + offset + " = " + $5.v + " * " + $7.v;
+	   if($3.t.tipo_base == "s")
+		$$.c += " * 256";
+		$$.c += gera_teste_limite_array( offset, $3.t );
+	   $$.c += ";\n  cin >> " + $3.v + "[" + offset + "];\n";
+	 }
        ;
   
 ATRIB : TK_ID TK_ATRIB E 
@@ -537,7 +558,16 @@ ATRIB : TK_ID TK_ATRIB E
 	  $1.t = consulta_ts( $1.v ) ;
 	  Tipo tipoArray = consulta_ts($1.v);
           gera_consulta_tipos( $1.t.tipo_base, $6.t.tipo_base );
-          $$.c = $3.c + $6.c + gera_teste_limite_array( $3.v, tipoArray ) +
+	  string address = gera_nome_var_temp("i");
+	  string pos = gera_nome_var_temp("i");
+	  if( $1.t.tipo_base == "s" ){
+	      $$.c = $3.c + gera_teste_limite_array( $3.v, tipoArray );
+	      $$.c += "  " + pos + " = " + $3.v + " * 256;";
+	      $$.c += "  " + address + " = &(" + $1.v + "[" + pos + "]);\n";
+              $$.c += "  strncpy( " + address + ", " + $3.v + ", 256 );\n";
+	  }
+	  else
+              $$.c = $3.c + $6.c + gera_teste_limite_array( $3.v, tipoArray ) +
                  "  " + $1.v + "[" + $3.v + "] = " + $6.v + ";\n";
         }
       | TK_ID TK_ABRE_COLCH E TK_COMMA E TK_FECHA_COLCH TK_ATRIB E
@@ -664,6 +694,26 @@ F : TK_CINT
 		if ($3.lista_tipo[i].ndim != tipo_func.params[i].ndim)
 			erro("Tipo incorreto de argumento");
 	}
+    }
+  | TK_ID TK_ABRE_PAREN TK_FECHA_PAREN 
+    {
+	// $$.t = Tipo( "i" );
+	Tipo tipo_func = consulta_ts($1.v);
+	$$.t = Tipo(tipo_func.retorno[0]);
+	$$.v = gera_nome_var_temp($$.t.tipo_base); 
+	
+	$$.c = "";	
+	
+	if($$.t.tipo_base != "s"){
+		$$.c +=  "  " + $$.v + " = " + $1.v + "();\n"; 
+	}
+	else{
+		$$.c += $1.v + "();\n";
+		$$.c += "  strncpy( "+ $$.v +", Global_Result_" + $1.v + ", 256 );\n";
+	}
+	// Checagem de tipos
+	if (tipo_func.params.size() != 0)
+		erro("Numero incorreto de argumentos");
     } 
   ;
   
@@ -863,7 +913,7 @@ Tipo consulta_ts( string nome_var ) {
 }
 
 void gera_consulta_tipos( string tipo1, string tipo2 ){
-  if( tipo1 != tipo2){
+  if( tipo1 != tipo2 && !(tipo1 == "d" && tipo2 == "i")){
     cout << "//tipo1 = " + tipo1 + ", tipo2 = " + tipo2;
     erro( "Tipos incompatíveis" );
   }
@@ -1292,6 +1342,7 @@ string declara_variavel( string nome, Tipo tipo ) {
                   (tipo.fim[0]) *  
                   (tipo.tipo_base == "s" ? 256 : 1)
                 ) + "]";
+	cout << "//indice " << indice << endl;
             break; 
             
     case 2: num = tipo.fim[0] * tipo.fim[1];
