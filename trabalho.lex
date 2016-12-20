@@ -75,11 +75,13 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "📥"       { yylval = Atributos( yytext ); return TK_ATRIB; }
 "<="       { yylval = Atributos( yytext ); return TK_MEIG; }
 ">="       { yylval = Atributos( yytext ); return TK_MAIG; }
-"<>"       { yylval = Atributos( yytext ); return TK_DIF; }
+"🚫"       { yylval = Atributos( yytext ); return TK_DIF; }
 "And"       { yylval = Atributos( yytext ); return TK_AND; }
 "Or"       { yylval = Atributos( yytext ); return TK_OR; }
 "❗️"       { yylval = Atributos( yytext ); return TK_NOT; }
 "📞"       { yylval = Atributos( yytext ); return TK_FUNC_CALL; }
+"⁉️"       { yylval = Atributos( yytext ); return TK_EXIT; }
+
 
 
 {CSTRING}  { yylval = Atributos( troca_aspas( yytext ), Tipo( "string" ) ); 
