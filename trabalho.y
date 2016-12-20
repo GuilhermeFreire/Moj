@@ -558,9 +558,9 @@ ATRIB : TK_ID TK_ATRIB E
 	  $1.t = consulta_ts( $1.v ) ;
 	  Tipo tipoArray = consulta_ts($1.v);
           gera_consulta_tipos( $1.t.tipo_base, $6.t.tipo_base );
-	  string address = gera_nome_var_temp("p");
 	  string pos = gera_nome_var_temp("i");
 	  if( $1.t.tipo_base == "s" ){
+	      string address = gera_nome_var_temp("p");
 	      $$.c = $3.c + gera_teste_limite_array( $3.v, tipoArray );
 	      $$.c += "  " + pos + " = " + $3.v + " * 256;";
 	      $$.c += "  " + address + " = " + $1.v + " + " + pos + ";\n";
