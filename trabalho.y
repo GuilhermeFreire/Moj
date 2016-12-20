@@ -518,8 +518,9 @@ ATRIB : TK_ID TK_ATRIB E
       | TK_ID TK_ABRE_COLCH E TK_FECHA_COLCH TK_ATRIB E
         { // Falta testar: tipo, limite do array, e se a variável existe
 	  $1.t = consulta_ts( $1.v ) ;
+	  Tipo tipoArray = consulta_ts($1.v);
           gera_consulta_tipos( $1.t.tipo_base, $6.t.tipo_base );
-          $$.c = $3.c + $6.c +
+          $$.c = $3.c + $6.c + gera_teste_limite_array( $3.v, tipoArray ) +
                  "  " + $1.v + "[" + $3.v + "] = " + $6.v + ";\n";
         }
       | TK_ID TK_ABRE_COLCH E TK_COMMA E TK_FECHA_COLCH TK_ATRIB E

@@ -112,10 +112,16 @@ Var
 	Altera🌜Int🌛;
 	💬🌜'16: ' ➕ Int🌛;
 
+	✍ Função com número errado de parâmetros (descomente para ver o erro)
+	✍Altera🌜Int, Str🌛;
+
+	✍ Função com tipo errado de parâmetro (descomente para ver o erro)
+	✍Altera🌜Str🌛;
+
 	✍ Entrada e saída padrão
-	💬🌜'17: Favor digitar um número: '🌛;
+	💬🌜'17: Favor digitar um número inteiro: '🌛;
 	📹🌜Int🌛;
-	💬🌜Int🌛;
+	💬🌜'    Seu número: ' ➕ Int🌛;
 
 	✍ Verificação de tipos
 	✍ Int 📥 Str; ✍ Erro: Tipos incompatíveis
