@@ -610,9 +610,12 @@ F : TK_CINT
 	if (tipo_func.params.size() != $3.lista_tipo.size())
 		erro("Numero incorreto de argumentos");
 
-	for (int i = 0; i < tipo_func.params.size(); ++i)
+	for (int i = 0; i < tipo_func.params.size(); ++i) {
 		if ($3.lista_tipo[i].tipo_base != tipo_func.params[i].tipo_base)
 			erro("Tipo incorreto de argumento");
+		if ($3.lista_tipo[i].ndim != tipo_func.params[i].ndim)
+			erro("Tipo incorreto de argumento");
+	}
     } 
   ;
   
