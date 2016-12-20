@@ -137,7 +137,15 @@ Var
 	💩
 		💬🌜'19: \'abc\' == \'def\''🌛;
 
-	✍ Verificação de limite de array e matriz
+	✍ Verificação de limite de array e matriz (descomente para ver o erro)
 	✍ Arr👉9👈 📥 101; ✍ Erro: Limite ultrapassado
 	✍ Mat👉2⚡️9👈 📥 102; ✍ Erro: Limite ultrapassado
+	💬🌜'What\'s inside the arrays?'🌛;
+	✍ Verificação de um elemento em array (in)
+	Int 📥 101;
+	💬🌜'20: Operador in'🌛;
+	💬🌜Int 📭 Arr🌛;
+	💬🌜104 📭 Arr🌛;
+	💬🌜102 📭 Mat🌛;
+	💬🌜103 📭 Mat🌛;
 🔒

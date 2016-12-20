@@ -564,7 +564,7 @@ E : E TK_ADD E
       blank.t = Tipo("b");
       $$ = gera_codigo_operador( blank, "!", $2 ); }
   | E TK_MEMBER TK_ID
-    { $$ = gera_codigo_member( $1, $3 ); }
+    { $$ = gera_codigo_member( $1, $3 );}
   | TK_ABRE_PAREN E TK_FECHA_PAREN
     { $$ = $2; }
   | F
