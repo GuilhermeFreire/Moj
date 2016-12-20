@@ -24,6 +24,7 @@ enum TIPO { FUNCAO = -1, BASICO = 0, VETOR = 1, MATRIZ = 2 };
 
 struct Tipo {
   string tipo_base;
+  bool ref = false;
   TIPO ndim;
   //int inicio[MAX_DIM];
   int fim[MAX_DIM];
@@ -140,7 +141,7 @@ string includes =
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
 %token TK_WHILE TK_UP TK_SWITCH TK_CASE
 %token TK_ABRE_PAREN TK_FECHA_PAREN
-%token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING
+%token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING TK_EREF
 %token TK_ADD TK_SUB TK_MULT TK_DIV
 %token TK_RETURN TK_ABRE_COLCH TK_FECHA_COLCH TK_COMMA TK_MEMBER
 
@@ -215,6 +216,17 @@ PARAMS : PARAM ';' PARAMS
 PARAM : IDS ':' TIPO_ID 
       {
         Tipo tipo = Tipo( traduz_nome_tipo_pascal( $3.v ) ); 
+        
+        $$ = Atributos();
+        $$.lista_str = $1.lista_str;
+        
+        for( int i = 0; i < $1.lista_str.size(); i ++ ) 
+          $$.lista_tipo.push_back( tipo );
+      }
+     | IDS ':' TK_EREF TIPO_ID
+      {
+        Tipo tipo = Tipo( traduz_nome_tipo_pascal( $4.v ) ); 
+	tipo.ref = true;
         
         $$ = Atributos();
         $$.lista_str = $1.lista_str;
@@ -1227,7 +1239,13 @@ string declara_variavel( string nome, Tipo tipo ) {
        erro( "Bug muito sério..." );
   }  
   
-  return em_C[ tipo.tipo_base ] + nome + indice;
+  if (tipo.ref) {
+      if (tipo.tipo_base == "s")
+          erro("Strings são referência por padrâo");
+      return em_C[ tipo.tipo_base ] + "&" + nome + indice;
+  } else {
+      return em_C[ tipo.tipo_base ] + nome + indice;
+  }
 }
 
 string gera_teste_limite_array( string indice_1, Tipo tipoArray ) {

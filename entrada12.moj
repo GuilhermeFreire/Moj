@@ -23,8 +23,28 @@ Var
 	🔙 0;
 🔒;
 
+⚙ Alter🌜Ref: 🔑🔢🌛: 🔢;
+🔓
+	Ref 📥 10;
+	🔙 0;
+🔒;
+
+✍ ⚙ AlterString🌜Ref: 🔑🔠🌛: 🔢;
+✍ 🔓
+✍ 	Ref 📥 'eyy, man';
+✍ 	🔙 0;
+✍ 🔒;
+
+✍ ⚙ AlterArray🌜Ref: Array👉3👈 Of 🔢🌛: 🔢;
+✍ 🔓
+✍ 	Ref👉0👈 📥 11;
+✍ 	🔙 0;
+✍ 🔒;
+
 Var
 	Msg1: 🔠;
+	Num: 🔢;
+	Arr: Array👉3👈 Of 🔢;
 
 🔓
 	💬🌜Max🌜4, 2🌛🌛;
@@ -37,5 +57,12 @@ Var
 	✍ Repeat🌜'eyy'🌛; ✍ Numero incorreto
 	✍ Repeat🌜'wtf', 10, 0🌛; ✍ Numero incorreto
 	✍ Repeat🌜'wtf', 'a'🌛; ✍ Tipo incorreto
+
+	Num 📥 0;
+	Alter🌜Num🌛;
+	💬🌜Num🌛;
+
+	✍ AlterString🌜Msg1🌛;
+	✍ 💬🌜Msg1🌛;
 🔒
 

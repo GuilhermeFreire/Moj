@@ -56,6 +56,7 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "®"       { yylval = Atributos( yytext ); return TK_EREAL; }
 "©"       { yylval = Atributos( yytext ); return TK_ECHAR; }
 "🔠"       { yylval = Atributos( yytext ); return TK_ESTRING; }
+"🔑"      { yylval = Atributos( yytext ); return TK_EREF; }
 
 "👍"       { yylval = Atributos( yytext ); return TK_TRUE; }
 "👎"       { yylval = Atributos( yytext ); return TK_FALSE; }
