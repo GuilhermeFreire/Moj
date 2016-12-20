@@ -164,17 +164,21 @@ PROGRAM : TK_PROGRAM TK_ID ';'
             empilha_ts(); }
         ; 
   
-DECLS : DECL DECLS
-        { $$.c = $1.c + $2.c; }
+DECLS : FUNCTION DECLS
+        { $$.c = $2.c + $1.c; }
+      | TK_VAR VARS DECLS
+        { $$.c = $2.c + $3.c; }
       | 
         { $$.c = ""; }
       ;  
 
+/*
 DECL : TK_VAR VARS
        { $$.c = $2.c; }
      | FUNCTION
      ;
-     
+*/
+    
 FUNCTION : { empilha_ts(); }  CABECALHO ';' CORPO { desempilha_ts(); } ';'
            { $$.c = $2.c + " {\n" + $4.c + " return Result;\n}\n"; } 
          ;
