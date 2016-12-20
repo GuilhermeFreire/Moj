@@ -145,7 +145,7 @@ string includes =
 %token TK_ADD TK_SUB TK_MULT TK_DIV
 %token TK_RETURN TK_ABRE_COLCH TK_FECHA_COLCH TK_COMMA TK_MEMBER
 
-%left TK_AND TK_OR TK_NOT TK_TRUE TK_FALSE TK_MEMBER
+%left TK_AND TK_OR TK_NOT TK_TRUE TK_FALSE TK_MEMBER TK_THEN
 %nonassoc '<' '>' TK_MAIG TK_MEIG '=' TK_DIF 
 %left TK_ADD TK_SUB
 %left TK_MULT TK_DIV TK_MOD
@@ -416,7 +416,7 @@ CMD_WHILE : TK_WHILE E TK_THEN COND_BLOCO
 	  }
 	  ;
 
-CMD_DO_WHILE : TK_THEN CMD TK_WHILE E TK_UP
+CMD_DO_WHILE : TK_THEN COND_BLOCO TK_WHILE E TK_UP
 	  {
 	    string label_teste = gera_label("teste_while");
 	    string label_fim = gera_label("fim_while");
