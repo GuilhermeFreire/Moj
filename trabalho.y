@@ -339,6 +339,7 @@ CMDS : CMD ';' CMDS
      ;  
      
 CMD : WRITELN
+    | E
     | SCOPE
     | SCANLN
     | ATRIB
@@ -346,7 +347,7 @@ CMD : WRITELN
       {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
     | { $$.c = ""; }
     ;   
-      
+        
     
 CMD_FOR : TK_FOR NOME_VAR TK_ATRIB E TK_TO E TK_THEN COND_BLOCO 
           { 
@@ -837,10 +838,16 @@ Tipo tipo_resultado( Tipo t1, string opr, Tipo t3 ) {
     return Tipo( aux );
   }
   else { // Testes para os operadores de comparacao de array
-    return Tipo();
+    string aux;
+    aux = tipo_opr[ t1.tipo_base + opr + t3.tipo_base ];
+  
+    if( aux == "" ) 
+      erro( "O operador " + opr + " não está definido para os tipos '" +
+            t1.tipo_base + "' e '" + t3.tipo_base + "'.");
+  
+    return Tipo( aux );
   }  
 } 
-
 Atributos gera_codigo_member(Atributos s1, Atributos s2){
     Atributos aux = Atributos();
     string codigo = "";
@@ -911,6 +918,83 @@ Atributos gera_codigo_operador( Atributos s1, string opr, Atributos s3 ) {
   
   ss.t = tipo_resultado( s1.t, opr, s3.t );
   ss.v = gera_nome_var_temp( ss.t.tipo_base );
+
+
+
+  if(s1.t.ndim > 0 && s3.t.ndim > 0 ){
+    if(s1.t.tipo_base != s3.t.tipo_base){
+      ss.c = "  " + ss.v + " = 0;\n";
+      return ss;
+    }
+
+    if( opr == "==" ){
+      string var_if = gera_nome_var_temp( "b" );
+      string label_iguais = gera_label( "iguais" );
+      string label_dif = gera_label( "dif" );
+      string label_end = gera_label( "end" );
+      int tamanho;
+
+      if(s1.t.ndim == 1){
+        tamanho = s1.t.fim[0];
+        if (s1.t.tipo_base == "c") tamanho *= sizeof(char);
+        if (s1.t.tipo_base == "i") tamanho *= sizeof(int);
+        if (s1.t.tipo_base == "d") tamanho *= sizeof(double);
+        if (s1.t.tipo_base == "b") tamanho *= sizeof(bool);
+      }else{
+        tamanho = s1.t.fim[0] * s1.t.fim[1];
+        if (s1.t.tipo_base == "c") tamanho *= sizeof(char);
+        if (s1.t.tipo_base == "i") tamanho *= sizeof(int);
+        if (s1.t.tipo_base == "d") tamanho *= sizeof(double);
+        if (s1.t.tipo_base == "b") tamanho *= sizeof(bool);
+      }
+ 
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = memcmp( " + s1.v + ", " + s3.v + ", " + toString( tamanho ) + " );\n";
+      ss.c += "  " + var_if + " = " + ss.v + " == 0;\n";
+      ss.c += "  if( " + var_if + " ) goto " + label_iguais + ";\n";
+      ss.c += "  " + ss.v + " = 0;\n";
+      ss.c += "  goto " + label_end + ";\n";
+      ss.c += "  " + label_iguais + ":;\n";
+      ss.c += "  " + ss.v + " = 1;\n";
+      ss.c += "  " + label_end + ":;\n";
+
+      return ss;
+    }
+    if( opr == "!=" ){
+      string var_if = gera_nome_var_temp( "b" );
+      string label_iguais = gera_label( "iguais" );
+      string label_dif = gera_label( "dif" );
+      string label_end = gera_label( "end" );
+      int tamanho;
+
+      if(s1.t.ndim == 1){
+        tamanho = s1.t.fim[0];
+        if (s1.t.tipo_base == "c") tamanho *= sizeof(char);
+        if (s1.t.tipo_base == "i") tamanho *= sizeof(int);
+        if (s1.t.tipo_base == "d") tamanho *= sizeof(double);
+        if (s1.t.tipo_base == "b") tamanho *= sizeof(bool);
+      }else{
+        tamanho = s1.t.fim[0] * s1.t.fim[1];
+        if (s1.t.tipo_base == "c") tamanho *= sizeof(char);
+        if (s1.t.tipo_base == "i") tamanho *= sizeof(int);
+        if (s1.t.tipo_base == "d") tamanho *= sizeof(double);
+        if (s1.t.tipo_base == "b") tamanho *= sizeof(bool);
+      }
+ 
+      ss.c = s1.c + s3.c;
+      ss.c += "  " + ss.v + " = memcmp( " + s1.v + ", " + s3.v + ", " + toString( tamanho ) + " );\n";
+      ss.c += "  " + var_if + " = " + ss.v + " != 0;\n";
+      ss.c += "  if( " + var_if + " ) goto " + label_iguais + ";\n";
+      ss.c += "  " + ss.v + " = 0;\n";
+      ss.c += "  goto " + label_end + ";\n";
+      ss.c += "  " + label_iguais + ":;\n";
+      ss.c += "  " + ss.v + " = 1;\n";
+      ss.c += "  " + label_end + ":;\n";
+
+      return ss;
+    }
+  }else{
+
   
   if (opr == "+" && (s1.t.tipo_base == "s" || s3.t.tipo_base == "s")) {
 		const char *fmt1, *fmt3;
@@ -1018,7 +1102,7 @@ Atributos gera_codigo_operador( Atributos s1, string opr, Atributos s3 ) {
   else
     ss.c = s1.c + s3.c + // Codigo das expressões dos filhos da arvore.
            "  " + ss.v + " = " + s1.v + " " + opr + " " + s3.v + ";\n"; 
-  
+  }
   debug( "E: E " + opr + " E", ss );
   return ss;
 }

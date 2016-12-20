@@ -1,5 +1,5 @@
-all: remove trabalho entrada1.moj gabarito
-	./trabalho < entrada1.moj > gerado.cc
+all: remove trabalho entrada12.moj gabarito
+	./trabalho < entrada12.moj > gerado.cc
 	./gabarito < gerado.cc
 	g++ -o saida gerado.cc
 	./saida
@@ -18,3 +18,4 @@ remove: remove.sh
 
 gabarito: gabarito_files/lex.yy.c gabarito_files/y.tab.c
 	g++ -o gabarito gabarito_files/y.tab.c -lfl
+
