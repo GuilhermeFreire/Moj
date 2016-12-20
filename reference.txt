@@ -33,3 +33,6 @@
 📥-> =
 ➡️-> To
 💾-> Program
+🔑-> reference param
+📭-> in (member of array)
+🚩-> flag

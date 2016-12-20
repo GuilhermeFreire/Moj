@@ -1,0 +1,23 @@
+💾 Concatena_strings;
+
+⚙ formata🌜a, a: 🔠🌛: 🔠;🔓
+	🤔🌜a > b🌛⤵️
+		🔙 'Sr(a). ' ➕ a ➕ ' ' ➕ b;
+	💩
+		🔙 'Mr(s). ' ➕ b ➕ ', ' ➕ a;
+🔒;
+
+Var
+	✍nome1, nome2: 🔠;
+	nomes: Array👉2👈 Of 🔠;
+🔓
+	💬🌜'Digite o seu nome: '🌛;
+	📹🌜nomes👉0👈🌛;
+	💬🌜'Digite o seu sobrenome: '🌛;
+	📹🌜nomes👉1👈🌛;
+	💬🌜'\n'🌛;
+
+	💬🌜'Bom dia, ' ➕ formata🌜nomes👉0👈, nomes👉1👈🌛🌛;
+	💬🌜'Bom dia, ' ➕ formata🌜' ' ➕ nomes👉0👈, nomes👉1👈🌛🌛;
+	💬🌜'Bom dia, ' ➕ formata🌜nomes👉0👈, ' ' ➕ nomes👉1👈🌛🌛;
+🔒

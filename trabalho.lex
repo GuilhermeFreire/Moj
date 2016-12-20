@@ -71,7 +71,6 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "📭"       { yylval = Atributos( yytext ); return TK_MEMBER; }
 
 
-".."       { yylval = Atributos( yytext ); return TK_PTPT; }
 "📥"       { yylval = Atributos( yytext ); return TK_ATRIB; }
 "<="       { yylval = Atributos( yytext ); return TK_MEIG; }
 ">="       { yylval = Atributos( yytext ); return TK_MAIG; }

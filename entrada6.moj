@@ -11,5 +11,6 @@ Var
     ✍Local variables only exist within their scopes.
     local_var_1 📥 'Whaat?! I am a LOCAL variable!';
     💬🌜local_var_1🌛;
+    💬🌜'\n'🌛;
   🔒;
 🔒
