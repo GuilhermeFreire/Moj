@@ -1,5 +1,5 @@
-all: remove trabalho exemplos.moj gabarito
-	./trabalho < exemplos.moj > gerado.cc
+all: remove trabalho concatena_string.moj gabarito
+	./trabalho < concatena_string.moj > gerado.cc
 	./gabarito < gerado.cc
 	g++ -o saida gerado.cc
 	./saida

@@ -181,14 +181,26 @@ DECL : TK_VAR VARS
 */
     
 FUNCTION : { empilha_ts(); }  CABECALHO ';' CORPO { desempilha_ts(); } ';'
-           { $$.c = $2.c + " {\n" + $4.c + " return Result;\n}\n"; } 
+           { $$.c = $2.c + " {\n" + $4.c;
+		if($2.t.tipo_base == "s")
+		  $$.c += "  strncpy( "+ $2.lista_str[0] +", Result, 256 );\n}\n";
+		else
+		  $$.c += "  return Result;\n}\n"; } 
          ;
 
 CABECALHO : TK_FUNCTION TK_ID OPC_PARAM ':' TIPO_ID
             { 
               Tipo retorno(traduz_nome_tipo_pascal($5.v));
               insere_funcao_ts($2.v, retorno, $3.lista_tipo);
-              $$.c = declara_funcao($2.v, retorno, $3.lista_str, $3.lista_tipo);
+	      $$.c = "";
+	      string func_name = "Global_Result_" + $2.v;
+	      if(retorno.tipo_base == "s"){
+		$$.c += "char " + func_name + "[256];\n";
+		$$.t = Tipo("s");
+	      }
+
+	      $$.c += declara_funcao($2.v, retorno, $3.lista_str, $3.lista_tipo);
+	      $$.lista_str.push_back(func_name);
             }
           ;
           
@@ -374,7 +386,12 @@ CMD : WRITELN
     | SCANLN
     | ATRIB
     | TK_RETURN E
-      {$$.c = $2.c + "  Result = " + $2.v + ";\n";}
+      {
+	if( $2.t.tipo_base == "s" ) 
+            $$.c = $2.c + "  strncpy( Result, " + $2.v + ", 256 );\n";
+	else
+	    $$.c = $2.c + "  Result = " + $2.v + ";\n";
+      }
     | { $$.c = ""; }
     ;   
         
@@ -621,12 +638,22 @@ F : TK_CINT
 	Tipo tipo_func = consulta_ts($1.v);
 	$$.t = Tipo(tipo_func.retorno[0]);
 	$$.v = gera_nome_var_temp($$.t.tipo_base); 
-
-	$$.c = $3.c + "  " + $$.v + " = " + $1.v + "( ";
-	for( int i = 0; i < $3.lista_str.size() - 1; ++i)
-		$$.c += $3.lista_str[i] + ", ";
-	$$.c += $3.lista_str[$3.lista_str.size()-1] + " );\n"; 
-
+	
+	$$.c = $3.c;	
+	
+	if($$.t.tipo_base != "s"){
+		$$.c +=  "  " + $$.v + " = " + $1.v + "( ";
+		for( int i = 0; i < $3.lista_str.size() - 1; ++i)
+			$$.c += $3.lista_str[i] + ", ";
+		$$.c += $3.lista_str[$3.lista_str.size()-1] + " );\n"; 
+	}
+	else{
+		$$.c += $1.v + "( ";
+		for( int i = 0; i < $3.lista_str.size() - 1; ++i)
+			$$.c += $3.lista_str[i] + ", ";
+		$$.c += $3.lista_str[$3.lista_str.size()-1] + " );\n";
+		$$.c += "  strncpy( "+ $$.v +", Global_Result_" + $1.v + ", 256 );\n";
+	}
 	// Checagem de tipos
 	if (tipo_func.params.size() != $3.lista_tipo.size())
 		erro("Numero incorreto de argumentos");
