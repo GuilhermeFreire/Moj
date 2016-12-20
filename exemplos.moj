@@ -1,0 +1,137 @@
+💾 Exemplos;
+
+⚙ Soma🌜A, B: 🔢🌛: 🔢;
+🔓
+	🔙 A ➕ B;
+🔒;
+
+
+⚙ Altera🌜Ref: 🔑🔢🌛: 🔢;
+🔓
+	Ref 📥 99;
+	🔙 0;
+🔒;
+
+Var
+	Int: 🔢;
+	Char: ©;
+	Bool: ☯;
+	Real: ®;
+	Str: 🔠;
+	Arr: Array👉5👈 Of 🔢;
+	Mat: Array👉3⚡️3👈 Of 🔢;
+
+🔓
+	✍ Todos os tipos da linguagem:
+
+	Int 📥 6 ✖️ 7;
+	💬🌜' 1: 6 * 7 = ' ➕ Int🌛;
+
+	Char 📥 'r';
+	💬🌜' 2: Caracte' ➕ Char🌛;
+
+	Bool 📥 1 = 1;
+	💬🌜' 3: 1 == 1 = ' ➕ Bool🌛;
+
+	Real 📥 10.0 ➗ 3.0;
+	💬🌜' 4: 10.0 / 3.0 = ' ➕ Real🌛;
+
+	Str 📥 'World!';
+	💬🌜' 5: Hello ' ➕ Str🌛;
+
+	Arr👉4👈 📥 101;
+	💬🌜' 6: Arr[4] = ' ➕ Arr👉4👈 🌛;
+
+	Mat👉2⚡️2👈 📥 102;
+	💬🌜' 7: Mat[2][2] = ' ➕ Mat👉2⚡️2👈🌛;
+
+	✍ Estruturas de controle:
+
+	✍ If-Else
+	🤔 0 = 1 ⤵️
+		💬🌜' 8: Matemática é uma mentira'🌛;
+	💩
+		💬🌜' 8: Matemática é vida'🌛;
+
+	✍ For loop
+	Str 📥 'Cha ';
+	🔂 Int 📥 1 ➡️ 4 ⤵️
+		Str 📥 Str ➕ 'cha ';
+	💬🌜' 9: ' ➕ Str🌛;
+
+	✍While
+	Int 📥 10;
+	🔄 Int < 20 ⤵️
+		Int 📥 Int ➕ 2;
+	💬🌜'10: ' ➕ Str🌛;
+
+	✍ Do-while
+	Int 📥 0;
+	⤵️
+	🔓
+		Int 📥 Int ➕ 1;
+	🔒🔄Int < 30⤴️
+	💬🌜'11: ' ➕ Int ➕ ' iteracoes no Do-While'🌛;
+
+	✍ Switch
+	Int 📥 10;
+	💬🌜'12: Switch'🌛;
+	🚦🌜Int🌛🔓
+		🚥 3:🔓
+			💬🌜'    Caiu no Three!'🌛;
+		🔒
+		🚥 2:🔓
+			💬🌜'    Caiu no Two!'🌛;
+		🔒
+		🚥 4 ➕ 5:🔓
+			💬🌜'    Caiu no Nine!'🌛;
+		🔒
+		🌀:🔓
+			💬🌜'    Caiu no Default!'🌛;
+		🔒
+	🔒
+
+	✍ Bloco com variaveis locais
+	Var
+		Local: 🔠;
+	🔓
+		Local 📥 '13: Variavel local';
+		💬🌜Local🌛;
+	🔒;
+	✍ 💬🌜Local🌛; ✍ Descomente para ter erro: variável não declarada
+
+	✍ Expressões com precedência e associatividade
+	Int 📥 5 ➕ 8 ✖️ 🌜1003 ➖ 3🌛;
+	💬🌜'14: ' ➕ Int🌛;
+
+	✍ Função com parâmetro por valor
+	Int 📥 Soma🌜10, 1🌛;
+	💬🌜'15: ' ➕ Int🌛;
+
+	✍ Função com parâmetro por referência
+	Altera🌜Int🌛;
+	💬🌜'16: ' ➕ Int🌛;
+
+	✍ Entrada e saída padrão
+	💬🌜'17: Favor digitar um número: '🌛;
+	📹🌜Int🌛;
+	💬🌜Int🌛;
+
+	✍ Verificação de tipos
+	✍ Int 📥 Str; ✍ Erro: Tipos incompatíveis
+
+	✍ Operadores para string
+	🤔 'abc' < 'def' ⤵️
+		💬🌜'18: \'abc\' < \'def\''🌛;
+	💩
+		💬🌜'18: \'abc\' > \'def\''🌛;
+
+	🤔 'abc' 🚫 'def' ⤵️
+		💬🌜'19: \'abc\' != \'def\''🌛;
+	💩
+		💬🌜'19: \'abc\' == \'def\''🌛;
+
+	✍ Verificação de limite de array e matriz
+	✍ Arr👉9👈 📥 101; ✍ Erro: Limite ultrapassado
+	✍ Mat👉2⚡️9👈 📥 102; ✍ Erro: Limite ultrapassado
+🔒
