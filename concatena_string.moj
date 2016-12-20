@@ -1,5 +1,13 @@
 💾 Concatena_strings;
 
+✍ATENÇÃO: Apenas conseguimos implementar array de strings usando char*,
+✍         o que o gabarito não aceita. Portanto deixamos comentadas as
+✍         linhas que usam array de strings e descomentadas as linhas que
+✍         usam variáveis separadas. Ambas funcionam, entretanto a de array
+✍         de strings é rejeitada pelo gabarito devido ao char*.
+✍         Para testar a outra versão, bastar inverter as linhas comentadas
+✍         com suas equivalentes descomentadas
+
 ⚙ formata🌜a, b: 🔠🌛: 🔠;🔓
 	🤔🌜a > b🌛⤵️
 		🔙 'Sr(a). ' ➕ a ➕ ' ' ➕ b;

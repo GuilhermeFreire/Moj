@@ -24,10 +24,10 @@ void multiplica( double a[3][4], double b[4][2], int lin_a, int col_a, int lin_b
     for( i = 0; i < lin_a; i++ ){
         for( j = 0; j < col_b; j++ ) {
             c[i][j] = 0;
-            printf("%f\n", c[i][j]);
             for( k = 0; k < lin_b; k++ ){
+	      printf("%f = %f + %f * %f = \n", c[i][j], c[i][j], a[i][k], b[k][j]);
               c[i][j] = c[i][j] + a[i][k] * b[k][j];
-	      printf("%f\n", c[i][j]);
+	      printf("%f, i: %d, j: %d, k: %d\n", c[i][j], i, j, k);
             }
         }
     }
