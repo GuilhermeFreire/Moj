@@ -240,22 +240,35 @@ PARAM : IDS ':' TIPO_ID
                           toInt( $5.v ) );
         
         $$ = Atributos();
+        $$.lista_str = $1.lista_str;
         
+        for( int i = 0; i < $1.lista_str.size(); i ++ ) 
+          $$.lista_tipo.push_back( tipo );
+
+        /*
         for( int i = 0; i < $1.lista_str.size(); i ++ ) {
           $$.c += declara_variavel( $1.lista_str[i], tipo ) + ";\n";
           insere_var_ts( $1.lista_str[i], tipo );
         }
+        */
       }
     | IDS ':' TK_ARRAY TK_ABRE_COLCH TK_CINT TK_COMMA TK_CINT TK_FECHA_COLCH TK_OF TIPO_ID
        {
           Tipo tipo = Tipo(traduz_nome_tipo_pascal( $10.v ), toInt( $5.v ), toInt( $7.v ) );
          
           $$ = Atributos();
+          $$.lista_str = $1.lista_str;
+        
 
+          for( int i = 0; i < $1.lista_str.size(); i ++ ) 
+            $$.lista_tipo.push_back( tipo );
+
+          /*
 	  for( int i = 0; i < $1.lista_str.size(); i ++ ) {
             $$.c += declara_variavel( $1.lista_str[i], tipo ) + ";\n";
             insere_var_ts( $1.lista_str[i], tipo );
           }
+          */
 	}
     ;
           
