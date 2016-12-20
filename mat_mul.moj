@@ -2,6 +2,9 @@
 
 ✍ATENÇÃO: O For na nossa linguagem itera até o limite inclusive
 ✍         Por essa razão, tivemos que subtrair 1 dos limites.
+✍         Outra coisa a osbervar é que o nosso print coloca
+✍         automaticamente um '\n' ao final, causando possíveis
+✍         erros de formatação com o código original.
 
 Var seed: 🔢;
 
@@ -31,9 +34,7 @@ Var i, j, k: 🔢;
 		🔂 j 📥 0 ➡️ col_b ⤵️🔓
 			c👉i⚡️j👈 📥 0;
 			🔂 k 📥 0 ➡️ lin_b ⤵️🔓
-				💬🌜c👉i⚡️j👈 ➕ ' = ' ➕ c👉i⚡️j👈 ➕ ' + ' ➕ a👉i⚡️k👈 ➕ ' * ' ➕ b👉k⚡️j👈 ➕ ' = ' 🌛;
 				c👉i⚡️j👈 📥 c👉i⚡️j👈 ➕ a👉i⚡️k👈 ✖️ b👉k⚡️j👈;
-				💬🌜c👉i⚡️j👈 ➕ ', i: ' ➕ i ➕ ', j: ' ➕ j ➕ ', k: ' ➕ k🌛;
 			🔒		
 		🔒	
 	🔒
@@ -55,27 +56,11 @@ Var i, j: 🔢;
 	🔙 0; 
 🔒;
 
-⚙ imprimeA🌜m: Array👉3⚡️4👈 Of ®; l, c: 🔢🌛: 🔢;
-Var i, j: 🔢;
-🔓
-	✍l 📥 l ➖ 1;
-	✍c 📥 c ➖ 1;
-
-	🔂 i 📥 0 ➡️ l ⤵️🔓
-		💬🌜''🌛;
-		🔂 j 📥 0 ➡️ c ⤵️🔓
-			💬🌜m👉i⚡️j👈🌛;	
-		🔒	
-	🔒
-	🔙 0; 
-🔒;
-
 
 Var a: Array👉3⚡️4👈 Of ®;
 	b: Array👉4⚡️2👈 Of ®;
 	c: Array👉3⚡️2👈 Of ®;
 	i, j, k: 🔢;
-	d: ®;
 🔓
 	seed 📥 5323;
 
@@ -84,7 +69,6 @@ Var a: Array👉3⚡️4👈 Of ®;
 			a👉i⚡️j👈 📥 🌜pseudo_random🌜🌛 〰 10🌛;
 		🔒	
 	🔒
-	✍imprimeA🌜 a, 3, 4 🌛;
 
 	🔂 i 📥 0 ➡️ 3 ⤵️🔓
 		🔂 j 📥 0 ➡️ 1 ⤵️🔓

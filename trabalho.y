@@ -1410,7 +1410,7 @@ string gera_indice_array( string out, string indice_1, string indice_2, Tipo tip
   string multiplicacao = gera_nome_var_temp( "b" );
   string soma = gera_nome_var_temp( "b" );
 
-  string codigo = "  " + multiplicacao + " = " + indice_1 + " * " + toString( tipoArray.fim[0] ) + ";\n";
+  string codigo = "  " + multiplicacao + " = " + indice_1 + " * " + toString( tipoArray.fim[1] ) + ";\n";
   codigo += "  " + soma + " = " + multiplicacao + " + " + indice_2 + ";\n";
   codigo += "  " + out + "[" + soma + "]";
 
@@ -1421,7 +1421,7 @@ string gera_indice_array2( string out, string var, string indice_1, string indic
   string multiplicacao = gera_nome_var_temp( "b" );
   string soma = gera_nome_var_temp( "b" );
 
-  string codigo = "  " + multiplicacao + " = " + indice_1 + " * " + toString( tipoArray.fim[0] ) + ";\n";
+  string codigo = "  " + multiplicacao + " = " + indice_1 + " * " + toString( tipoArray.fim[1] ) + ";\n";
   codigo += "  " + soma + " = " + multiplicacao + " + " + indice_2 + ";\n";
   codigo += "  " + out + " = " + var + "[" + soma + "];\n";
 
