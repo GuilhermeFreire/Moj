@@ -29,8 +29,10 @@ Var i, j, k: 🔢;
 	
 	🔂 i 📥 0 ➡️ lin_a ⤵️🔓
 		🔂 j 📥 0 ➡️ col_b ⤵️🔓
+			c👉i⚡️j👈 📥 0;
 			🔂 k 📥 0 ➡️ lin_b ⤵️🔓
-				c👉i⚡️j👈 📥 c👉i⚡️j👈 ➕ a👉i⚡️k👈 ➕ b👉k⚡️j👈; 
+				c👉i⚡️j👈 📥 c👉i⚡️j👈 ➕ a👉i⚡️k👈 ✖️ b👉k⚡️j👈;
+				💬🌜c👉i⚡️j👈🌛;
 			🔒		
 		🔒	
 	🔒
@@ -52,22 +54,40 @@ Var i, j: 🔢;
 	🔙 0; 
 🔒;
 
+⚙ imprimeA🌜m: Array👉3⚡️4👈 Of ®; l, c: 🔢🌛: 🔢;
+Var i, j: 🔢;
+🔓
+	✍l 📥 l ➖ 1;
+	✍c 📥 c ➖ 1;
+
+	🔂 i 📥 0 ➡️ l ⤵️🔓
+		💬🌜''🌛;
+		🔂 j 📥 0 ➡️ c ⤵️🔓
+			💬🌜m👉i⚡️j👈🌛;	
+		🔒	
+	🔒
+	🔙 0; 
+🔒;
+
 
 Var a: Array👉3⚡️4👈 Of ®;
 	b: Array👉4⚡️2👈 Of ®;
 	c: Array👉3⚡️2👈 Of ®;
 	i, j, k: 🔢;
+	d: ®;
 🔓
 	seed 📥 5323;
+
 	🔂 i 📥 0 ➡️ 2 ⤵️🔓
 		🔂 j 📥 0 ➡️ 3 ⤵️🔓
-			a👉i⚡️j👈	📥 🌜pseudo_random🌜🌛 〰 10🌛;
+			a👉i⚡️j👈 📥 🌜pseudo_random🌜🌛 〰 10🌛;
 		🔒	
 	🔒
+	✍imprimeA🌜 a, 3, 4 🌛;
 
 	🔂 i 📥 0 ➡️ 3 ⤵️🔓
 		🔂 j 📥 0 ➡️ 1 ⤵️🔓
-			b👉i⚡️j👈	📥 🌜pseudo_random🌜🌛 〰 10🌛;
+			b👉i⚡️j👈 📥 🌜pseudo_random🌜🌛 〰 10🌛;
 		🔒	
 	🔒
 

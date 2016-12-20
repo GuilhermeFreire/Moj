@@ -575,7 +575,7 @@ ATRIB : TK_ID TK_ATRIB E
           $1.t = consulta_ts( $1.v ) ; 
           gera_consulta_tipos( $1.t.tipo_base, $8.t.tipo_base );
           Tipo tipoArray = consulta_ts($1.v);
-          $$.c = $3.c + $5.c + gera_teste_limite_array( $3.v, $5.v, tipoArray ) + gera_indice_array( $$.v, $3.v, $5.v, tipoArray ) + " = " + $8.v + ";\n";
+          $$.c = $3.c + $5.c + $8.c + gera_teste_limite_array( $3.v, $5.v, tipoArray ) + gera_indice_array( $$.v, $3.v, $5.v, tipoArray ) + " = " + $8.v + ";\n";
         }   
       ;   
 
@@ -711,7 +711,7 @@ F : TK_CINT
 		$$.c += $1.v + "();\n";
 		$$.c += "  strncpy( "+ $$.v +", Global_Result_" + $1.v + ", 256 );\n";
 	}
-	// Checagem de tipos
+	// Checagem de params
 	if (tipo_func.params.size() != 0)
 		erro("Numero incorreto de argumentos");
     } 
@@ -1342,7 +1342,6 @@ string declara_variavel( string nome, Tipo tipo ) {
                   (tipo.fim[0]) *  
                   (tipo.tipo_base == "s" ? 256 : 1)
                 ) + "]";
-	cout << "//indice " << indice << endl;
             break; 
             
     case 2: num = tipo.fim[0] * tipo.fim[1];
