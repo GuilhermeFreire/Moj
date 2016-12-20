@@ -12,6 +12,7 @@ INT     {NUMERO}+
 DOUBLE  {NUMERO}+("."{NUMERO}+)?
 ID      {LETRA}({LETRA}|{NUMERO})*
 CSTRING "'"([^\n']|"\\'")*"'"
+CCHAR   {LETRA}
 
 COMMENT ✍([^\n]|"\\"[^n])*"\n"
 
@@ -84,8 +85,14 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 
 
 
-{CSTRING}  { yylval = Atributos( troca_aspas( yytext ), Tipo( "string" ) ); 
-             return TK_CSTRING; }
+{CSTRING}  {    if(strlen(yytext) == 3){
+			yylval = Atributos( yytext, Tipo( "char" ) ); 
+		}
+		else{
+			yylval = Atributos( troca_aspas( yytext ), Tipo( "string" ) ); 
+		}
+		return TK_CSTRING;
+	   }
 {ID}       { yylval = Atributos( yytext ); return TK_ID; }
 {INT}      { yylval = Atributos( yytext, Tipo( "int" ) ); return TK_CINT; }
 {DOUBLE}   { yylval = Atributos( yytext, Tipo( "double" ) ); return TK_CDOUBLE; }

@@ -492,7 +492,9 @@ ATRIB : TK_ID TK_ATRIB E
           gera_consulta_tipos( $1.t.tipo_base, $3.t.tipo_base );
           if( $1.t.tipo_base == "s" ) 
             $$.c = $3.c + "  strncpy( " + $1.v + ", " + $3.v + ", 256 );\n";
-          else
+        //  else if($1.t.tipo_base == "c")
+	 //   $$
+	  else
             $$.c = $3.c + "  " + $1.v + " = " + $3.v + ";\n"; 
             
           debug( "ATRIB : TK_ID TK_ATRIB E ';'", $$ );
@@ -556,7 +558,8 @@ F : TK_CINT
   | TK_CDOUBLE
     { $$.v = $1.v; $$.t = Tipo( "d" ); $$.c = $1.c; }
   | TK_CSTRING
-    { $$.v = $1.v; $$.t = Tipo( "s" ); $$.c = $1.c; }
+    { $$.v = $1.v; string tipo = ($1.t.tipo_base == "char")? "c": "s";
+	$$.t = Tipo( tipo ); $$.c = $1.c; }
   | TK_ID TK_ABRE_COLCH E TK_FECHA_COLCH  
     { 
       Tipo tipoArray = consulta_ts( $1.v );
@@ -817,6 +820,7 @@ Tipo consulta_ts( string nome_var ) {
 
 void gera_consulta_tipos( string tipo1, string tipo2 ){
   if( tipo1 != tipo2){
+    cout << "//tipo1 = " + tipo1 + ", tipo2 = " + tipo2;
     erro( "Tipos incompatíveis" );
   }
 }
