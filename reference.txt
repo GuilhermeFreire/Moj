@@ -36,3 +36,6 @@
 🔑-> reference param
 📭-> in (member of array)
 🚩-> flag
+🚫-> !=
+⁉️-> exit(0)
+🌀-> default

@@ -140,7 +140,7 @@ string includes =
 %token TK_MAIG TK_MEIG TK_DIF TK_IF TK_THEN TK_ELSE TK_AND TK_OR
 %token TK_FOR TK_TO TK_DO TK_ARRAY TK_OF TK_PTPT
 %token TK_WHILE TK_UP TK_SWITCH TK_CASE
-%token TK_ABRE_PAREN TK_FECHA_PAREN TK_EXIT
+%token TK_ABRE_PAREN TK_FECHA_PAREN TK_EXIT TK_DEFAULT
 %token TK_EINTEGER TK_EBOOL TK_EREAL TK_ECHAR TK_ESTRING TK_EREF
 %token TK_ADD TK_SUB TK_MULT TK_DIV
 %token TK_RETURN TK_ABRE_COLCH TK_FECHA_COLCH TK_COMMA TK_MEMBER
@@ -445,16 +445,24 @@ CMD_SWITCH : TK_SWITCH TK_ABRE_PAREN TK_ID TK_FECHA_PAREN TK_BEGIN CASES TK_END
 		string end_label = gera_label("end_switch");
 		int i = 0;
 		for(i = 0; i < $6.lista_atr.size(); i++){
-		    codigo += $6.lista_atr[i].c;
-		    temp_vars.push_back(gera_nome_var_temp("b"));
-		    codigo += "  " + temp_vars[temp_vars.size()-1] + " = "+
+		    if($6.lista_atr[i].v != "default"){
+		    	codigo += $6.lista_atr[i].c;
+		    	temp_vars.push_back(gera_nome_var_temp("b"));
+		    	codigo += "  " + temp_vars[temp_vars.size()-1] + " = "+
 				$6.lista_atr[i].v + " == " + $3.v + ";\n";
+		    }
 		}
 
 		for(i = 0; i < $6.lista_atr.size(); i++){
-		    labels.push_back(gera_label("case"));
-		    codigo += "  if( " + temp_vars[i] + " ) goto "+
-				labels[labels.size()-1] + ";\n";
+		    if($6.lista_atr[i].v == "default"){
+		    labels.push_back(gera_label("default"));
+			codigo += "  goto " + labels[labels.size()-1] + ";\n";
+		    }
+		    else{
+			    labels.push_back(gera_label("case"));
+			    codigo += "  if( " + temp_vars[i] + " ) goto "+
+					labels[labels.size()-1] + ";\n";
+		    }
 		}
 		for(i = 0; i < $6.lista_atr.size(); i++){
 		    codigo += labels[i] + ":;\n"+ $6.lista_str[i]+
@@ -469,6 +477,14 @@ CASES : CASES TK_CASE E ':' BLOCO
 	  $$  = $1;
 	  $$.lista_atr.push_back( $3 );
 	  $$.lista_str.push_back( $5.c );
+	}
+      | CASES TK_DEFAULT ':' BLOCO
+	{
+	  $$  = $1;
+	  Atributos aux = Atributos();
+	  aux.v = "default";
+	  $$.lista_atr.push_back( aux );
+	  $$.lista_str.push_back( $4.c );
 	}
       |{$$ = Atributos();}
       ;

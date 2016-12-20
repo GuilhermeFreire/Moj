@@ -82,6 +82,8 @@ COMMENT ✍([^\n]|"\\"[^n])*"\n"
 "❗️"       { yylval = Atributos( yytext ); return TK_NOT; }
 "📞"       { yylval = Atributos( yytext ); return TK_FUNC_CALL; }
 "⁉️"       { yylval = Atributos( yytext ); return TK_EXIT; }
+"🌀"       { yylval = Atributos( yytext ); return TK_DEFAULT; }
+
 
 
 
